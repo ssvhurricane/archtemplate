@@ -1,0 +1,131 @@
+using Bootstrap;
+using Constants;
+using Model;
+using Presenters.Window;
+using Services.Input;
+using Services.Log;
+using Signals;
+using UnityEngine;
+using View.Camera;
+using Zenject;
+
+namespace Presenters
+{
+    public class ProjectPresenter : IInitializable
+    {
+        private readonly SignalBus _signalBus;
+        private readonly LogService _logService;
+
+        private readonly MainMenuPresenter _mainMenuPresenter;
+        private readonly ProjectModel _projectModel;
+
+        private  MainHUDPresenter _mainHUDPresenter;
+        private  PlayerPresenter _playerPresenter;
+        private  WolfPresenter _wolfPresenter;
+        private  CameraPresenter _cameraPresenter;
+        private  InputService _inputService;
+
+        public ProjectPresenter(SignalBus signalBus,
+            LogService logService,
+            MainMenuPresenter mainMenuPresenter,
+            ProjectModel projectModel
+           )
+        {
+            _signalBus = signalBus;
+            _logService = logService;
+            _mainMenuPresenter = mainMenuPresenter;
+            _projectModel = projectModel;
+
+            _logService.ShowLog(GetType().Name, 
+                Services.Log.LogType.Message,
+                "Call Constructor Method.", 
+                LogOutputLocationType.Console);
+           
+            _signalBus.Subscribe<SceneServiceSignals.SceneLoadingCompleted>(data =>
+            {
+                if (data.Data == SceneServiceConstants.MainMenu)
+                {
+                    _logService.ShowLog(GetType().Name,
+                          Services.Log.LogType.Message,
+                          $"Subscribe SceneServiceSignals.SceneLoadingCompleted, Data ={data.Data}",
+                          LogOutputLocationType.Console);
+
+                    _inputService.ClearServiceValues();
+
+                    _mainMenuPresenter.ShowView();
+                }
+
+                if (data.Data == SceneServiceConstants.Level1)
+                {
+                    //_logService.ShowLog(GetType().Name,
+                    //    Services.Log.LogType.Message,
+                    //    $"Subscribe SceneServiceSignals.SceneLoadingCompleted, Data ={data.Data}",
+                    //    LogOutputLocationType.Console);
+
+                    CreateGame();
+                    
+                    Cursor.visible = false;
+                }
+
+                //if (data.Data == LevelConstants.Level2)
+                //{
+                //  etc..
+                //}
+
+            });
+
+
+            _signalBus.Subscribe<SceneServiceSignals.SceneLoadingStarted>(data =>
+            {
+                _logService.ShowLog(GetType().Name,
+                             Services.Log.LogType.Message,
+                             $"Subscribe SceneServiceSignals.SceneLoadingStarted, Data ={data.Data}",
+                             LogOutputLocationType.Console);
+            });
+        }
+
+        public void Initialize()
+        {
+            // Entry point.
+            _mainMenuPresenter.ShowView();
+        }
+
+        private void CreateGame()
+        {
+            var sceneContextDynamic = SceneContext.Create();
+            sceneContextDynamic.AddNormalInstaller(new GameInstaller());
+            sceneContextDynamic.Awake();
+
+            _mainHUDPresenter = sceneContextDynamic.Container.Resolve<MainHUDPresenter>();
+            _mainHUDPresenter.ShowView();
+
+            _playerPresenter = sceneContextDynamic.Container.Resolve<PlayerPresenter>();
+            _playerPresenter.ShowView();
+
+            _wolfPresenter = sceneContextDynamic.Container.Resolve<WolfPresenter>();
+            _wolfPresenter.ShowView();
+
+            _cameraPresenter = sceneContextDynamic.Container.Resolve<CameraPresenter>();
+            _cameraPresenter.ShowView<TopDownCameraView>(CameraServiceConstants.TopDownCamera, _playerPresenter.GetView());
+
+
+            _inputService = sceneContextDynamic.Container.Resolve<InputService>();
+            _inputService.TakePossessionOfObject(_playerPresenter);
+
+            //5. Get Game Flow
+
+            //6. Start Game
+            StartGame();
+        }
+
+        private void StartGame()
+        {
+            _logService.ShowLog(GetType().Name,
+                            Services.Log.LogType.Message,
+                            "Call StartGame Method.",
+                            LogOutputLocationType.Console);
+        }
+
+        private void PauseGame() { }
+    }
+}
