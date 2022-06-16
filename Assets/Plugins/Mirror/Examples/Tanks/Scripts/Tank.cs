@@ -8,11 +8,15 @@ namespace Mirror.Examples.Tanks
         [Header("Components")]
         public NavMeshAgent agent;
         public Animator animator;
+
         public TextMesh healthBar;
+        public TextMesh _nameTank;
+
         public Transform turret;
 
         [Header("Movement")]
         public float rotationSpeed = 100;
+
 
         [Header("Firing")]
         public KeyCode shootKey = KeyCode.Space;
@@ -20,13 +24,32 @@ namespace Mirror.Examples.Tanks
         public Transform projectileMount;
 
         [Header("Stats")]
-        [SyncVar] public int health = 4;
+        [SyncVar(hook = nameof(OnHealthChanged))] public int health = 4;
+
+        [SyncVar(hook = nameof(OnNameChanged))] public string nameTank = "EmptyTankName";
+
+        [SyncVar(hook = nameof(OnColorChanged))]
+        public Color playerColor = Color.white;
+
+        void OnColorChanged(Color _Old, Color _New)
+        {
+            _nameTank.color = playerColor;
+        }
+
+        void OnNameChanged(string _Old, string _New)
+        {
+            _nameTank.text = nameTank;
+        }
+        void OnHealthChanged(int _Old, int _New)
+        {
+            healthBar.text = new string('-', health);
+        }
 
         void Update()
         {
             // always update health bar.
             // (SyncVar hook would only update on clients, not on server)
-            healthBar.text = new string('-', health);
+            //  healthBar.text = new string('-', health);
 
             // movement for local player
             if (isLocalPlayer)
@@ -50,6 +73,21 @@ namespace Mirror.Examples.Tanks
                 RotateTurret();
             }
         }
+
+        public override void OnStartLocalPlayer()
+        {
+            CmdNameTank("Player" + Random.Range(100, 999),
+                new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
+        }
+
+        [Command]
+        void CmdNameTank(string name, Color colorName)
+        {
+            // Change name on Server (WathAllClients , not server bec. SyncVar);
+            nameTank = name;
+            playerColor = colorName;
+        }
+
 
         // this is called on the server
         [Command]
