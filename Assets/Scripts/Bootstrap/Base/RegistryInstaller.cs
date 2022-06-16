@@ -65,7 +65,8 @@ namespace Bootstrap
         }
         private void InstallListSettings()
         {
-            InstallRegistryData<ProjectServiceSettings>(ProjectServiceSettingsRegistry);
+            InstallRegistryData<ProjectServiceSettings>(ProjectServiceSettingsRegistry); 
+            InstallRegistryData<NetworkServiceSettings>(NetworkServiceSettingsRegistry);
 
             InstallRegistryData<PlayerSettings>(PlayerSettingsRegistry);
             InstallRegistryData<ResourcesServiceSettings>(ResourcesServiceSettingsRegistry);

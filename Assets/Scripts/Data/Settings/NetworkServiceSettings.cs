@@ -11,6 +11,8 @@ namespace Data.Settings
 
         public NetworkType NetworkType;
 
+        public NetworkEngine NetworkEngine;
+
         string IRegistryData.Id => Id;
     }
 }

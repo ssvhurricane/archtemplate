@@ -4,6 +4,7 @@ using Model;
 using Presenters.Window;
 using Services.Input;
 using Services.Log;
+using Services.Project;
 using Signals;
 using UnityEngine;
 using View.Camera;
@@ -18,6 +19,7 @@ namespace Presenters
 
         private readonly MainMenuPresenter _mainMenuPresenter;
         private readonly ProjectModel _projectModel;
+        private readonly ProjectService _projectService;
 
         private  MainHUDPresenter _mainHUDPresenter;
         private  PlayerPresenter _playerPresenter;
@@ -28,13 +30,15 @@ namespace Presenters
         public ProjectPresenter(SignalBus signalBus,
             LogService logService,
             MainMenuPresenter mainMenuPresenter,
-            ProjectModel projectModel
+            ProjectModel projectModel,
+            ProjectService projectService
            )
         {
             _signalBus = signalBus;
             _logService = logService;
             _mainMenuPresenter = mainMenuPresenter;
             _projectModel = projectModel;
+            _projectService = projectService;
 
             _logService.ShowLog(GetType().Name, 
                 Services.Log.LogType.Message,
@@ -47,12 +51,12 @@ namespace Presenters
                 {
                     _logService.ShowLog(GetType().Name,
                           Services.Log.LogType.Message,
-                          $"Subscribe SceneServiceSignals.SceneLoadingCompleted, Data ={data.Data}",
+                          $"Subscribe SceneServiceSignals.SceneLoadingCompleted, Data = {data.Data}",
                           LogOutputLocationType.Console);
 
                     _inputService.ClearServiceValues();
 
-                    _mainMenuPresenter.ShowView();
+                    _mainMenuPresenter.ShowView(_projectService.GetProjectType());
                 }
 
                 if (data.Data == SceneServiceConstants.Level1)
@@ -86,8 +90,11 @@ namespace Presenters
 
         public void Initialize()
         {
-            // Entry point.
-            _mainMenuPresenter.ShowView();
+            // Entry point. 
+
+            _projectService.Configurate();
+
+            _mainMenuPresenter.ShowView(_projectService.GetProjectType());
         }
 
         private void CreateGame()

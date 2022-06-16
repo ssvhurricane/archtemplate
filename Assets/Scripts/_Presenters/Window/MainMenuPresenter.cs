@@ -2,6 +2,7 @@ using Constants;
 using Services.Anchor;
 using Services.Factory;
 using Services.Log;
+using Services.Project;
 using Services.Scene;
 using Services.Window;
 using System;
@@ -57,7 +58,7 @@ namespace Presenters.Window
                 LogOutputLocationType.Console);
         }
 
-        public void ShowView() 
+        public void ShowView(ProjectType projectType = ProjectType.Offline) 
         {
             if (_windowService.IsWindowShowing<MainMenuView>()) return;
 

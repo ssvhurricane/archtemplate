@@ -23,7 +23,10 @@ namespace Data.Settings
         }
 
         [SerializeField]
-        public ProjectMode ProjectMode; 
+        public ProjectMode ProjectMode;
+
+        [SerializeField]
+        public ProjectType ProjectType;
 
         [Serializable]
         public class GameVersion 

@@ -1,3 +1,4 @@
+using Data.Settings;
 using Zenject;
 
 namespace Services.Network
@@ -6,9 +7,31 @@ namespace Services.Network
     {
         private readonly SignalBus _signalBus;
 
-        public NetworkService(SignalBus signalBus)
+        private NetworkServiceSettings _networkServiceSettings;
+        public NetworkService(SignalBus signalBus, NetworkServiceSettings networkServiceSettings)
         {
             _signalBus = signalBus;
+
+            _networkServiceSettings = networkServiceSettings;
+        }
+
+        public void Initialize()
+        {
+            switch ( _networkServiceSettings.NetworkEngine)
+            {
+                case NetworkEngine.Mirror:
+                    {
+                        // TODO:
+                       // MirrorSDKController
+                        break;
+                    }
+                case NetworkEngine.Custom: 
+                    {
+                        // TODO: 
+                        // CustomSDKController
+                        break;
+                    }
+            }
         }
     }
 }
