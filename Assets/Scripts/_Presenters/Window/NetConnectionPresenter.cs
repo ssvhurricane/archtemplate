@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Presenters.Window
 {
-    public class GameSettingsPresenter 
+    public class NetConnectionPresenter
     {
         private readonly SignalBus _signalBus;
         private readonly LogService _logService;
@@ -18,9 +18,9 @@ namespace Presenters.Window
         private readonly FactoryService _factoryService;
         private readonly HolderService _holderService;
 
-        private GameSettingsView _gameSettingsView;
+        private NetConnectionView _netConnectionView;
 
-        public GameSettingsPresenter(SignalBus signalBus,
+        public NetConnectionPresenter(SignalBus signalBus,
             LogService logService,
             IWindowService windowService,
             FactoryService factoryService,
@@ -41,22 +41,22 @@ namespace Presenters.Window
 
         public void ShowView()
         {
-            if (_windowService.IsWindowShowing<GameSettingsView>()) return;
-            
-            if (_windowService.GetWindow<GameSettingsView>() != null)
-                _gameSettingsView = (GameSettingsView)_windowService.ShowWindow<GameSettingsView>();
+            if (_windowService.IsWindowShowing<NetConnectionView>()) return;
+
+            if (_windowService.GetWindow<NetConnectionView>() != null)
+                _netConnectionView = (NetConnectionView)_windowService.ShowWindow<NetConnectionView>();
             else
             {
                 Transform holderTansform = _holderService._windowTypeHolders.FirstOrDefault(holder => holder.Key == WindowType.PopUpWindow).Value;
 
                 if (holderTansform != null)
-                    _gameSettingsView = _factoryService.Spawn<GameSettingsView>(holderTansform);
+                    _netConnectionView = _factoryService.Spawn<NetConnectionView>(holderTansform);
             }
         }
 
         public IWindow GetView() 
         {
-            return _gameSettingsView;
+            return _netConnectionView;
         }
     }
 }

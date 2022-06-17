@@ -47,6 +47,8 @@ namespace Bootstrap
             Container.Bind<IInitializable>().To<ProjectPresenter>().AsSingle(); 
 
             Container.InstallElementAsSingle<GameSettingsPresenter>();
+
+            Container.InstallElementAsSingle<NetConnectionPresenter>();
         }
         void InitExecutionOrder() { }
        

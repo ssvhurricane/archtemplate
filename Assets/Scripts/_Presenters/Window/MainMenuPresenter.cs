@@ -25,11 +25,13 @@ namespace Presenters.Window
         private readonly HolderService _holderService;
 
         private readonly GameSettingsPresenter _gameSettingsPresenter;
+        private readonly NetConnectionPresenter _netConnectionPresenter;
 
         private MainMenuView _mainMenuView;
         private GameSettingsView _gameSettingsView;
+        private NetConnectionView _netConnectionView;
 
-      
+
         private IDisposable _disposableStartButton,
                                         _disposableSettingsButton,
                                             _disposableQuitButton,
@@ -38,10 +40,11 @@ namespace Presenters.Window
         public MainMenuPresenter(SignalBus signalBus,
             LogService logService,
             ISceneService sceneService, 
-            IWindowService windowService, 
+            IWindowService windowService,
             FactoryService factoryService,
             HolderService holderService,
-            GameSettingsPresenter gameSettingsPresenter) 
+            GameSettingsPresenter gameSettingsPresenter,
+            NetConnectionPresenter netConnectionPresenter)
         {
             _signalBus = signalBus;
             _logService = logService;
@@ -51,10 +54,11 @@ namespace Presenters.Window
             _holderService = holderService;
 
             _gameSettingsPresenter = gameSettingsPresenter;
+            _netConnectionPresenter = netConnectionPresenter;
 
             _logService.ShowLog(GetType().Name,
                 Services.Log.LogType.Message,
-                "Call Constructor Method", 
+                "Call Constructor Method",
                 LogOutputLocationType.Console);
         }
 
@@ -80,7 +84,7 @@ namespace Presenters.Window
 
                 _disposableStartButton = _mainMenuView._startButton
                .OnClickAsObservable()
-               .Subscribe(_ => OnMainMenuViewButtonClick(_mainMenuView._startButton.GetInstanceID()));
+               .Subscribe(_ => OnMainMenuViewButtonClick(_mainMenuView._startButton.GetInstanceID(), projectType));
             }
             else 
             {
@@ -123,7 +127,7 @@ namespace Presenters.Window
             }
         }
 
-        private void OnMainMenuViewButtonClick(int buttonId)
+        private void OnMainMenuViewButtonClick(int buttonId, ProjectType projectType = ProjectType.Offline)
         {
             if (buttonId == _mainMenuView._startButton.GetInstanceID()) 
             {
@@ -132,7 +136,28 @@ namespace Presenters.Window
                "Call OnStartButtonClick Method.",
                LogOutputLocationType.Console);
 
-                _sceneService.LoadLevel(SceneServiceConstants.Level1, SceneService.LoadMode.Unitask);
+                if (projectType == ProjectType.Offline)
+                {
+                    _sceneService.LoadLevel(SceneServiceConstants.Level1, SceneService.LoadMode.Unitask);
+                }
+                else if(projectType == ProjectType.Online)
+                {
+                    _netConnectionPresenter.ShowView();
+                    _netConnectionView = (NetConnectionView)_netConnectionPresenter.GetView();
+
+                    if (_netConnectionView._backButton != null)
+                    {
+                        OnDispose(_disposableBackButton);
+
+                        _disposableBackButton = _netConnectionView._backButton
+                       .OnClickAsObservable()
+                       .Subscribe(_ => OnNetConnectionViewButtonClick(_netConnectionView._backButton.GetInstanceID()));
+                    }
+
+                    _windowService.HideWindow<MainMenuView>();
+
+                    // ToDo clear subscribe, etc...
+                }
             }
 
             if (buttonId == _mainMenuView._settingsButton.GetInstanceID())
@@ -182,6 +207,22 @@ namespace Presenters.Window
               
 
                 _windowService.HideWindow<GameSettingsView>();
+
+                _windowService.ShowWindow<MainMenuView>();
+            }
+        }
+
+        private void OnNetConnectionViewButtonClick(int buttonId)
+        {
+            if (buttonId == _netConnectionView._backButton.GetInstanceID())
+            {
+                _logService.ShowLog(GetType().Name,
+                   Services.Log.LogType.Message,
+                   "Call OnBackButtonClick Method.",
+                   LogOutputLocationType.Console);
+
+
+                _windowService.HideWindow<NetConnectionView>();
 
                 _windowService.ShowWindow<MainMenuView>();
             }

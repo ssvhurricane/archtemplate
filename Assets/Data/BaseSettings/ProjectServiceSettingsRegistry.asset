@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: ProjectServiceSettingsRegistry
   m_EditorClassIdentifier: 
   RegistryData:
-    ProjectName: ArhTemplate
-    gameDataVersion:
+    ProjectName: 'Phantom Queen : Valhalla'
+    GameDataVersion:
       Major: 0
       Minor: 0
+    ProjectMode: 1
+    ProjectType: 1

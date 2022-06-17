@@ -11,12 +11,10 @@ namespace Services.Window
     {
         public List<IWindow> _registeredWindows { get; private set; }
 
-        public Dictionary<Type, MemoryPool<IWindow>> _windowPools { get; private set; }// TODO:
+        public Dictionary<Type, MemoryPool<IWindow>> _windowPools { get; private set; } // TODO:
       
         private readonly SignalBus _signalBus;
         private readonly LogService _logService;
-
-        private IWindow _activeWindow;
 
         public WindowService(SignalBus signalBus, LogService logService) 
         {
@@ -57,21 +55,20 @@ namespace Services.Window
 
             return window;
         }
-
-        public IWindow GetActiveWindow<TWindow>() where TWindow : class, IWindow
-        {
-            return (_activeWindow is TWindow) ? _activeWindow : null;
-        }
     
         public bool IsWindowShowing<TWindow>() where TWindow : class, IWindow
         {
-            return _activeWindow != null && _activeWindow.GetType() == typeof(TWindow) ||
-                  _registeredWindows.Count > 0 && _registeredWindows.Exists(window => window.GetType() == typeof(TWindow));
+            if (_registeredWindows.Count > 0 && _registeredWindows.Exists(window => window.GetType() == typeof(TWindow)))
+                return _registeredWindows.FirstOrDefault(window => window.GetType() == typeof(TWindow)).IsShown;
+            return 
+                false;
         }
-        public bool IsWindowShowing(Type type) 
+        public bool IsWindowShowing(Type type)
         {
-            return _activeWindow != null && _activeWindow.GetType() == type ||
-                  _registeredWindows.Count > 0 && _registeredWindows.Exists(window => window.GetType() == type);
+            if (_registeredWindows.Count > 0 && _registeredWindows.Exists(window => window.GetType() == type))
+                return _registeredWindows.FirstOrDefault(window => window.GetType() == type).IsShown;
+            return
+                false;
         }
 
         public IWindow ShowWindow<TWindow>(IWindowArgs windowArgs = null) where TWindow : class, IWindow
@@ -118,29 +115,16 @@ namespace Services.Window
         {
            // TODO:
         }
-
-        public void HideActiveWindow()
-        {
-            if (_activeWindow == null) return;
-
-            _activeWindow.Hide();
-
-            _signalBus.Fire(new WindowServiceSignals.Hidden(_activeWindow));
-        } 
         
         public void HideAllWindows()
         {
             if (_registeredWindows.Count != 0)
-                foreach (var regWindow in _registeredWindows)  regWindow.Hide();
+                foreach (var regWindow in _registeredWindows) regWindow.Hide();
         } 
 
         private bool CanActivateWindow(IWindow window) 
         {
-            var result = window != null && (_activeWindow == null || _activeWindow != window || _activeWindow.IsShown);
-
-            if (!result) return false;
-
-            return result;
+            return window != null && !window.IsShown;
         }
      
         public void ClearServiceValues()
