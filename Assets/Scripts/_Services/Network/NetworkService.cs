@@ -33,5 +33,19 @@ namespace Services.Network
                     }
             }
         }
+        public NetworkType GetNetworkType() 
+        {
+            return _networkServiceSettings.NetworkType;
+        }
+
+        public NetworkEngine GetNetworkEngine() 
+        { 
+            return _networkServiceSettings.NetworkEngine; 
+        }
+
+        public NetworkAuthMode GetNetworkAuthMode()
+        { 
+            return _networkServiceSettings.NetworkAuthMode;
+        }
     }
 }

@@ -4,6 +4,7 @@ using Model;
 using Presenters.Window;
 using Services.Input;
 using Services.Log;
+using Services.Network;
 using Services.Project;
 using Signals;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace Presenters
         private readonly MainMenuPresenter _mainMenuPresenter;
         private readonly ProjectModel _projectModel;
         private readonly ProjectService _projectService;
+        private readonly NetworkService _networkService;
 
         private  MainHUDPresenter _mainHUDPresenter;
         private  PlayerPresenter _playerPresenter;
@@ -31,7 +33,8 @@ namespace Presenters
             LogService logService,
             MainMenuPresenter mainMenuPresenter,
             ProjectModel projectModel,
-            ProjectService projectService
+            ProjectService projectService,
+            NetworkService networkService
            )
         {
             _signalBus = signalBus;
@@ -39,6 +42,7 @@ namespace Presenters
             _mainMenuPresenter = mainMenuPresenter;
             _projectModel = projectModel;
             _projectService = projectService;
+            _networkService = networkService;
 
             _logService.ShowLog(GetType().Name, 
                 Services.Log.LogType.Message,
@@ -59,7 +63,8 @@ namespace Presenters
                     _mainMenuPresenter.ShowView(_projectService.GetProjectType());
                 }
 
-                if (data.Data == SceneServiceConstants.Level1)
+                // Offline Levels.
+                if (data.Data == SceneServiceConstants.OfflineLevel1)
                 {
                     //_logService.ShowLog(GetType().Name,
                     //    Services.Log.LogType.Message,
@@ -71,10 +76,23 @@ namespace Presenters
                     Cursor.visible = false;
                 }
 
-                //if (data.Data == LevelConstants.Level2)
+                //if (data.Data == LevelConstants.OfflineLevel1)
                 //{
                 //  etc..
                 //}
+
+                // Onlime Levels.
+                if (data.Data == SceneServiceConstants.Lobby)
+                {
+                    // TODO:
+                    CreateLobby();
+                }
+
+                if (data.Data == SceneServiceConstants.OnlineLevel1)
+                {
+                    // TODO:
+                    CreateGame();
+                }
 
             });
 
@@ -94,7 +112,17 @@ namespace Presenters
 
             _projectService.Configurate();
 
-            _mainMenuPresenter.ShowView(_projectService.GetProjectType());
+            _mainMenuPresenter.ShowView(_projectService.GetProjectType(),
+                _networkService.GetNetworkAuthMode());
+        }
+
+        private void CreateLobby() 
+        {
+            // TODO:
+            _logService.ShowLog(GetType().Name,
+                           Services.Log.LogType.Message,
+                           $"CreateLobby!",
+                           LogOutputLocationType.Console);
         }
 
         private void CreateGame()

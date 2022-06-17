@@ -2,6 +2,7 @@ using Constants;
 using Services.Anchor;
 using Services.Factory;
 using Services.Log;
+using Services.Network;
 using Services.Project;
 using Services.Scene;
 using Services.Window;
@@ -62,7 +63,8 @@ namespace Presenters.Window
                 LogOutputLocationType.Console);
         }
 
-        public void ShowView(ProjectType projectType = ProjectType.Offline) 
+        public void ShowView(ProjectType projectType = ProjectType.Offline,
+            NetworkAuthMode networkAuthMode = NetworkAuthMode.None) 
         {
             if (_windowService.IsWindowShowing<MainMenuView>()) return;
 
@@ -84,7 +86,8 @@ namespace Presenters.Window
 
                 _disposableStartButton = _mainMenuView._startButton
                .OnClickAsObservable()
-               .Subscribe(_ => OnMainMenuViewButtonClick(_mainMenuView._startButton.GetInstanceID(), projectType));
+               .Subscribe(_ => OnMainMenuViewButtonClick(_mainMenuView._startButton.GetInstanceID(),
+                                                                            projectType, networkAuthMode));
             }
             else 
             {
@@ -106,7 +109,7 @@ namespace Presenters.Window
             {
                 _logService.ShowLog(GetType().Name,
                   Services.Log.LogType.Error,
-                  $"{_mainMenuView._settingsButton}  = null!",
+                  $"{_mainMenuView._settingsButton} = null!",
                   LogOutputLocationType.Console);
             }
 
@@ -122,12 +125,14 @@ namespace Presenters.Window
             {
                 _logService.ShowLog(GetType().Name,
                 Services.Log.LogType.Error,
-                $"{_mainMenuView._quitButton}  = null!",
+                $"{_mainMenuView._quitButton} = null!",
                 LogOutputLocationType.Console);
             }
         }
 
-        private void OnMainMenuViewButtonClick(int buttonId, ProjectType projectType = ProjectType.Offline)
+        private void OnMainMenuViewButtonClick(int buttonId, 
+            ProjectType projectType = ProjectType.Offline,
+            NetworkAuthMode networkAuthMode = NetworkAuthMode.None)
         {
             if (buttonId == _mainMenuView._startButton.GetInstanceID()) 
             {
@@ -138,24 +143,32 @@ namespace Presenters.Window
 
                 if (projectType == ProjectType.Offline)
                 {
-                    _sceneService.LoadLevel(SceneServiceConstants.Level1, SceneService.LoadMode.Unitask);
+                    _sceneService.LoadLevel(SceneServiceConstants.OfflineLevel1, SceneService.LoadMode.Unitask);
                 }
                 else if(projectType == ProjectType.Online)
                 {
-                    _netConnectionPresenter.ShowView();
-                    _netConnectionView = (NetConnectionView)_netConnectionPresenter.GetView();
-
-                    if (_netConnectionView._backButton != null)
+                    if (networkAuthMode == NetworkAuthMode.Advanced)
                     {
-                        OnDispose(_disposableBackButton);
+                        _netConnectionPresenter.ShowView();
+                        _netConnectionView = (NetConnectionView)_netConnectionPresenter.GetView();
 
-                        _disposableBackButton = _netConnectionView._backButton
-                       .OnClickAsObservable()
-                       .Subscribe(_ => OnNetConnectionViewButtonClick(_netConnectionView._backButton.GetInstanceID()));
+                        if (_netConnectionView._backButton != null)
+                        {
+                            OnDispose(_disposableBackButton);
+
+                            _disposableBackButton = _netConnectionView._backButton
+                           .OnClickAsObservable()
+                           .Subscribe(_ => OnNetConnectionViewButtonClick(_netConnectionView._backButton.GetInstanceID()));
+                        }
+
+                        _windowService.HideWindow<MainMenuView>();
+
                     }
-
-                    _windowService.HideWindow<MainMenuView>();
-
+                    else if (networkAuthMode == NetworkAuthMode.Simple)
+                    {
+                        _sceneService.LoadLevel(SceneServiceConstants.Lobby, SceneService.LoadMode.Unitask);
+                    }
+                    
                     // ToDo clear subscribe, etc...
                 }
             }

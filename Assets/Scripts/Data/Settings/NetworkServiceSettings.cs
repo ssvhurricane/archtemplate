@@ -13,6 +13,8 @@ namespace Data.Settings
 
         public NetworkEngine NetworkEngine;
 
+        public NetworkAuthMode NetworkAuthMode;
+
         string IRegistryData.Id => Id;
     }
 }

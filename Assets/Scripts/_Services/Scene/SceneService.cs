@@ -32,7 +32,7 @@ namespace Services.Scene
             {
                 _nextScene = item;
 
-                if (_loadedScene!=null 
+                if (_loadedScene != null 
                     && item.Id == id
                     && !item.Level.IsSingleScene 
                     && !item.Level.Additive) 
@@ -50,6 +50,7 @@ namespace Services.Scene
                                 await UT_UnloadLevelAsync().ContinueWith(() =>
                                 {
                                     GC.Collect();
+
                                     if (_nextScene.Level != null) SceneManager.LoadScene(_nextScene.Level.ScenePath);
                                 });
                                 break;
@@ -60,14 +61,14 @@ namespace Services.Scene
                 }
                 else
                 {
-                    if (!SceneManager.GetSceneByName(_nextScene.Level.Name).isLoaded)
+                    if (!SceneManager.GetSceneByName(_nextScene.Level.Name).isLoaded && item.Id == id)
                     {
                         switch (loadMode)
                         {
                             case LoadMode.Unirx:
                                 {
-                                   
                                     LoadLevelAsync();
+
                                     break;
                                 }
                             case LoadMode.Unitask:
@@ -75,7 +76,9 @@ namespace Services.Scene
                                     await UT_LoadLevelAsync().ContinueWith(() =>
                                     {
                                         _loadedScene = _nextScene;
+
                                         GC.Collect();
+
                                         _signalBus.TryFire(new SceneServiceSignals.SceneLoadingCompleted(_loadedScene.Id));
                                     });
                                     break;
