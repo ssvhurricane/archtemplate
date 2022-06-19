@@ -23,10 +23,12 @@ namespace Presenters
         private readonly ProjectService _projectService;
         private readonly NetworkService _networkService;
 
-        private  MainHUDPresenter _mainHUDPresenter;
-        private  PlayerPresenter _playerPresenter;
-        private  WolfPresenter _wolfPresenter;
-        private  CameraPresenter _cameraPresenter;
+        private MainHUDPresenter _mainHUDPresenter;
+        private PlayerPresenter _playerPresenter;
+        private WolfPresenter _wolfPresenter;
+        private CameraPresenter _cameraPresenter;
+        private LobbyPresenter _lobbyPresenter;
+
         private  InputService _inputService;
 
         public ProjectPresenter(SignalBus signalBus,
@@ -123,6 +125,26 @@ namespace Presenters
                            Services.Log.LogType.Message,
                            $"CreateLobby!",
                            LogOutputLocationType.Console);
+
+            var sceneContextDynamic = SceneContext.Create();
+            sceneContextDynamic.AddNormalInstaller(new GameInstaller());
+            sceneContextDynamic.Awake();
+
+            _lobbyPresenter = sceneContextDynamic.Container.Resolve<LobbyPresenter>();
+            _lobbyPresenter.ShowView();
+
+            _playerPresenter = sceneContextDynamic.Container.Resolve<PlayerPresenter>();
+            _playerPresenter.ShowView();
+
+            //_wolfPresenter = sceneContextDynamic.Container.Resolve<WolfPresenter>();
+            //_wolfPresenter.ShowView();
+
+            _cameraPresenter = sceneContextDynamic.Container.Resolve<CameraPresenter>();
+            _cameraPresenter.ShowView<TopDownCameraView>(CameraServiceConstants.TopDownCamera, _playerPresenter.GetView());
+
+
+            //_inputService = sceneContextDynamic.Container.Resolve<InputService>();
+            //_inputService.TakePossessionOfObject(_playerPresenter);
         }
 
         private void CreateGame()

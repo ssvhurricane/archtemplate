@@ -49,6 +49,8 @@ namespace Bootstrap
             Container.InstallElementAsSingle<GameSettingsPresenter>();
 
             Container.InstallElementAsSingle<NetConnectionPresenter>();
+
+            Container.InstallElementAsSingle<LobbyPresenter>();
         }
         void InitExecutionOrder() { }
        

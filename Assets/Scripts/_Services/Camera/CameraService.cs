@@ -99,7 +99,14 @@ namespace Services.Camera
 
         private void TPSCamera(IView bsView, IView camView, CameraServiceSettings cameraServiceSettings) 
         {
-            //ToDo...
+            // TODO: custom settings...
+            _baseView =  bsView.GetGameObject();
+            _cameraView = camView.GetGameObject();
+
+            _cameraView.transform.position = cameraServiceSettings.Position;
+            _cameraView.transform.rotation = Quaternion.Euler(cameraServiceSettings.Rotation);
+
+            _startProc = true;
         }
 
         private void CameraFolow() 
