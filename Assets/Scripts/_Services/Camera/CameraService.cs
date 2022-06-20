@@ -12,13 +12,16 @@ namespace Services.Camera
         private readonly CameraServiceSettings[] _cameraServiceSettings;
 
         private CameraServiceSettings _settings;
+
         private GameObject _baseView;
         private GameObject _cameraView;
 
         private bool _startProc = false;
+
         public CameraService(SignalBus signalBus, CameraServiceSettings[] cameraServiceSettings)
         {
             _signalBus = signalBus;
+
             _cameraServiceSettings = cameraServiceSettings;
         }
         public void ClearServiceValues()
@@ -64,46 +67,44 @@ namespace Services.Camera
 
         public void FixedTick()
         {
-            // Maybe FixedUpdate...
             if (_startProc && _baseView != null && _cameraView != null)
             {
                 CameraFolow();
             }
-            else 
-            {
-
-            }
-                    
         }
 
         private void FPSCamera(IView bsView, IView camView, CameraServiceSettings cameraServiceSettings)
         { 
-            //ToDo...
+            //TODO:
         }
 
         private void SideScrollerCamera(IView bsView, IView camView, CameraServiceSettings cameraServiceSettings) 
         {
-            //ToDo...
+            //TODO:
         }
 
         private void TopDownCamera(IView bsView, IView camView, CameraServiceSettings cameraServiceSettings) 
         {
            _baseView =  bsView.GetGameObject();
+
            _cameraView = camView.GetGameObject();
 
            _cameraView.transform.position = cameraServiceSettings.Position;
+
            _cameraView.transform.rotation = Quaternion.Euler(cameraServiceSettings.Rotation);
 
-            _startProc = true;
+           _startProc = true;
         }
 
         private void TPSCamera(IView bsView, IView camView, CameraServiceSettings cameraServiceSettings) 
         {
             // TODO: custom settings...
             _baseView =  bsView.GetGameObject();
+
             _cameraView = camView.GetGameObject();
 
             _cameraView.transform.position = cameraServiceSettings.Position;
+
             _cameraView.transform.rotation = Quaternion.Euler(cameraServiceSettings.Rotation);
 
             _startProc = true;
@@ -111,8 +112,11 @@ namespace Services.Camera
 
         private void CameraFolow() 
         {
-            var desiredPosition = _baseView.transform.position + _settings.CameraFollowOffset;
-            var smoothedPosition = Vector3.Lerp(_cameraView.transform.position, desiredPosition, _settings.CameraFollowSmoothSpeed);
+
+            var smoothedPosition = Vector3.Lerp(_cameraView.transform.position,
+                                                (_baseView.transform.position + _settings.CameraFollowOffset),
+                                                _settings.CameraFollowSmoothSpeed);
+
             _cameraView.transform.position = smoothedPosition + _settings.Position;
         }
        
