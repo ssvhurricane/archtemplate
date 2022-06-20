@@ -1,5 +1,6 @@
 using Services.Essence;
 using Signals;
+using TMPro;
 using UnityEngine;
 using Zenject;
 
@@ -7,6 +8,8 @@ namespace View
 {
     public class PlayerView : BaseEssence
     {
+        [SerializeField] public TextMeshProUGUI PlayerName;
+
         [SerializeField] public Animator Animator;
         [SerializeField] protected EssenceType Layer;
 
