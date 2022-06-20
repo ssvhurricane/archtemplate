@@ -135,12 +135,13 @@ namespace Presenters
 
             _playerPresenter = sceneContextDynamic.Container.Resolve<PlayerPresenter>();
             _playerPresenter.ShowView();
+            _playerPresenter.GetView().GetGameObject().GetComponent<Rigidbody>().useGravity = false;
 
             //_wolfPresenter = sceneContextDynamic.Container.Resolve<WolfPresenter>();
             //_wolfPresenter.ShowView();
 
             _cameraPresenter = sceneContextDynamic.Container.Resolve<CameraPresenter>();
-            _cameraPresenter.ShowView<TopDownCameraView>(CameraServiceConstants.TopDownCamera, _playerPresenter.GetView());
+            _cameraPresenter.ShowView<TPSCameraView>(CameraServiceConstants.TPSCamera, _playerPresenter.GetView());
 
 
             //_inputService = sceneContextDynamic.Container.Resolve<InputService>();
