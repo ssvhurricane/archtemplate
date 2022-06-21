@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels/Online/OnlineLevel1.unity
     guid: a52a288117bf2d74a84cfaaf7df7c1ad
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Levels/Offline/OfflineLevel1.unity
     guid: 64b07512992acce419f43a91d457ebe0
   - enabled: 0
