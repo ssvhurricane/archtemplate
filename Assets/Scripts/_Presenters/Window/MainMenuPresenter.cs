@@ -166,7 +166,7 @@ namespace Presenters.Window
                     }
                     else if (networkAuthMode == NetworkAuthMode.Simple)
                     {
-                        _sceneService.LoadLevel(SceneServiceConstants.Lobby, SceneService.LoadMode.Unitask);
+                        _sceneService.LoadLevel(SceneServiceConstants.Room, SceneService.LoadMode.Unitask);
                     }
                     
                     // ToDo clear subscribe, etc...

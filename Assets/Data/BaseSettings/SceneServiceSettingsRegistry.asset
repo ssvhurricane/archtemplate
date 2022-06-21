@@ -24,8 +24,8 @@ MonoBehaviour:
       IsSingleScene: 1
       Additive: 0
   - Level:
-      Name: Lobby
-      ScenePath: Scenes/Levels/Online/Lobby
+      Name: Room
+      ScenePath: Scenes/Levels/Online/Room
       IsSingleScene: 1
       Additive: 0
   - Level:

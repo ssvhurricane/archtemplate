@@ -5,8 +5,8 @@ using Zenject;
 
 namespace View.Window
 {
-    [Window("Resources/Prefabs/Windows/LobbyView", WindowType.BaseWindow)]
-    public class LobbyView : BaseWindow
+    [Window("Resources/Prefabs/Windows/RoomView", WindowType.BaseWindow)]
+    public class RoomView : BaseWindow
     {
         [SerializeField] protected WindowType Type;
 

@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Presenters.Window
 {
-    public class LobbyPresenter
+    public class RoomPresenter
     {
         private readonly SignalBus _signalBus;
         private readonly LogService _logService;
@@ -18,9 +18,9 @@ namespace Presenters.Window
         private readonly FactoryService _factoryService;
         private readonly HolderService _holderService;
 
-        private LobbyView _lobbyView;
+        private RoomView _roomView;
 
-        public LobbyPresenter(SignalBus signalBus,
+        public RoomPresenter(SignalBus signalBus,
             LogService logService,
             IWindowService windowService,
             FactoryService factoryService,
@@ -41,22 +41,22 @@ namespace Presenters.Window
 
         public void ShowView()
         {
-            if (_windowService.IsWindowShowing<LobbyView>()) return;
+            if (_windowService.IsWindowShowing<RoomView>()) return;
 
-            if (_windowService.GetWindow<LobbyView>() != null)
-                _lobbyView = (LobbyView)_windowService.ShowWindow<LobbyView>();
+            if (_windowService.GetWindow<RoomView>() != null)
+                _roomView = (RoomView)_windowService.ShowWindow<RoomView>();
             else
             {
                 Transform holderTansform = _holderService._windowTypeHolders.FirstOrDefault(holder => holder.Key == WindowType.BaseWindow).Value;
 
                 if (holderTansform != null)
-                    _lobbyView = _factoryService.Spawn<LobbyView>(holderTansform);
+                    _roomView = _factoryService.Spawn<RoomView>(holderTansform);
             }
         }
 
         public IWindow GetView() 
         {
-            return _lobbyView;
+            return _roomView;
         }
     }
 }

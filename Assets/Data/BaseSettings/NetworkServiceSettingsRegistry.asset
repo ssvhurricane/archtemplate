@@ -16,4 +16,4 @@ MonoBehaviour:
     Id: 1
     NetworkType: 3
     NetworkEngine: 1
-    NetworkAuthMode: 1
+    NetworkAuthMode: 2

@@ -27,7 +27,7 @@ namespace Presenters
         private PlayerPresenter _playerPresenter;
         private WolfPresenter _wolfPresenter;
         private CameraPresenter _cameraPresenter;
-        private LobbyPresenter _lobbyPresenter;
+        private RoomPresenter _roomPresenter;
 
         private  InputService _inputService;
 
@@ -84,10 +84,10 @@ namespace Presenters
                 //}
 
                 // Onlime Levels.
-                if (data.Data == SceneServiceConstants.Lobby)
+                if (data.Data == SceneServiceConstants.Room)
                 {
                     // TODO:
-                    CreateLobby();
+                    CreateRoom();
                 }
 
                 if (data.Data == SceneServiceConstants.OnlineLevel1)
@@ -118,7 +118,7 @@ namespace Presenters
                 _networkService.GetNetworkAuthMode());
         }
 
-        private void CreateLobby() 
+        private void CreateRoom() 
         {
             // TODO:
             _logService.ShowLog(GetType().Name,
@@ -130,8 +130,8 @@ namespace Presenters
             sceneContextDynamic.AddNormalInstaller(new GameInstaller());
             sceneContextDynamic.Awake();
 
-            _lobbyPresenter = sceneContextDynamic.Container.Resolve<LobbyPresenter>();
-            _lobbyPresenter.ShowView();
+            _roomPresenter = sceneContextDynamic.Container.Resolve<RoomPresenter>();
+            _roomPresenter.ShowView();
 
             _playerPresenter = sceneContextDynamic.Container.Resolve<PlayerPresenter>();
             _playerPresenter.ShowView();

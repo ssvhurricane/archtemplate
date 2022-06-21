@@ -785,7 +785,7 @@ GameObject:
   - component: {fileID: 4940699458425831332}
   - component: {fileID: 3153159915513206486}
   m_Layer: 5
-  m_Name: LobbyView
+  m_Name: RoomView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

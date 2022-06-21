@@ -50,7 +50,7 @@ namespace Bootstrap
 
             Container.InstallElementAsSingle<NetConnectionPresenter>();
 
-            Container.InstallElementAsSingle<LobbyPresenter>();
+            Container.InstallElementAsSingle<RoomPresenter>();
         }
         void InitExecutionOrder() { }
        
