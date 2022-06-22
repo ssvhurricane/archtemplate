@@ -15,6 +15,8 @@ namespace Data.Settings
 
         public NetworkAuthMode NetworkAuthMode;
 
+        public NetworkContextType NetworkContextType;
+
         string IRegistryData.Id => Id;
     }
 }

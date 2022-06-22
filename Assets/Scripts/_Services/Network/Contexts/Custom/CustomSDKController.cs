@@ -2,6 +2,9 @@ namespace Services.Network
 {
     public class CustomSDKController
     {
-        // TODO:
+        public CustomSDKController()
+        {
+            // TODO:
+        }
     }
 }

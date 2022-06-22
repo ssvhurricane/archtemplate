@@ -8,32 +8,35 @@ namespace Services.Network
     public class ProjectMirrorSDKNetworkRoomContext : NetworkRoomManager, INetworkContext, IEssence
     {
         // TODO:
-        public EssenceType EssenceType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public EssenceType EssenceType { get; set; }
 
-        public bool IsShown => throw new System.NotImplementedException();
+        public bool IsShown { get; protected set; }
 
-        public string Id { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public CreationMethod CreationMethod { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public OwnerType OwnerType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string Id { get; set; }
+        public CreationMethod CreationMethod { get; set; }
+        public OwnerType OwnerType { get; set; }
 
         public GameObject GetGameObject()
         {
-            throw new System.NotImplementedException();
+            return gameObject;
         }
 
         public void Hide()
         {
-            throw new System.NotImplementedException();
+            gameObject.SetActive(false);
+            IsShown = false;
         }
 
         public void Initialize(Transform parent)
         {
-            throw new System.NotImplementedException();
+            transform.SetParent(parent, false);
+            transform.SetAsLastSibling();
         }
-
+       
         public void Show()
         {
-            throw new System.NotImplementedException();
+            IsShown = true;
+            gameObject.SetActive(true);
         }
     }
 }

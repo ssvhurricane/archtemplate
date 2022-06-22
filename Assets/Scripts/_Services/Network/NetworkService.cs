@@ -7,10 +7,22 @@ namespace Services.Network
     {
         private readonly SignalBus _signalBus;
 
+        private MirrorSDKController _mirrorSDKController;
+
+        private CustomSDKController _customSDKController;
+
         private NetworkServiceSettings _networkServiceSettings;
-        public NetworkService(SignalBus signalBus, NetworkServiceSettings networkServiceSettings)
+
+        public NetworkService(SignalBus signalBus,
+            MirrorSDKController mirrorSDKController,
+            CustomSDKController customSDKController,
+            NetworkServiceSettings networkServiceSettings)
         {
             _signalBus = signalBus;
+
+            _mirrorSDKController = mirrorSDKController;
+
+            _customSDKController = customSDKController;
 
             _networkServiceSettings = networkServiceSettings;
         }
@@ -22,13 +34,14 @@ namespace Services.Network
                 case NetworkEngine.Mirror:
                     {
                         // TODO:
-                       // MirrorSDKController
+
+                        _mirrorSDKController.CreateContext(_networkServiceSettings.NetworkContextType);
+
                         break;
                     }
                 case NetworkEngine.Custom: 
                     {
-                        // TODO: 
-                        // CustomSDKController
+                        // TODO:  CustomSDKController
                         break;
                     }
             }

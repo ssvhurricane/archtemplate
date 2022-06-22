@@ -7,6 +7,7 @@ namespace Services.Essence
         EnemyGameObject,
         ItemGameObject,
         InteractionGameObject,
-        CameraGameObject
+        CameraGameObject,
+        ContextGameObject
     }
 }
