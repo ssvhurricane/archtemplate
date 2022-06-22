@@ -2,6 +2,8 @@ namespace Services.Network
 {
     public interface INetworkContext 
     {
-        // TODO: 
+        public void StartServer();
+
+        public void StopServer();
     }
 }

@@ -46,6 +46,18 @@ namespace Services.Network
                     }
             }
         }
+
+        public void StartServer()
+        {
+            _mirrorSDKController.GetCurrnetNetworkContext().StartServer();
+        }
+
+        public void StartClient()
+        {
+            // TODO:
+        }
+
+
         public NetworkType GetNetworkType() 
         {
             return _networkServiceSettings.NetworkType;

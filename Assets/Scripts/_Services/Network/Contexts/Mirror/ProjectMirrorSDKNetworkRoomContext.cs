@@ -20,7 +20,7 @@ namespace Services.Network
         {
             return gameObject;
         }
-
+       
         public void Hide()
         {
             gameObject.SetActive(false);
@@ -32,7 +32,18 @@ namespace Services.Network
             transform.SetParent(parent, false);
             transform.SetAsLastSibling();
         }
-       
+
+        public new void StartServer()
+        {
+            base.StartServer();
+            // TODO:
+        }
+
+        public new void StopServer()
+        {
+            // TODO:
+        }
+
         public void Show()
         {
             IsShown = true;

@@ -76,9 +76,18 @@ namespace Services.Network
                 Transform holderTansform = _holderService._essenceTypeTypeHolders.FirstOrDefault(holder => holder.Key == EssenceType.ContextGameObject).Value;
 
                 if (holderTansform != null)
-                    projectMirrorSDKNetworkRoomContext = _factoryService.Spawn<ProjectMirrorSDKNetworkRoomContext>(holderTansform);
-
+                    projectMirrorSDKNetworkRoomContext = _factoryService.Spawn<ProjectMirrorSDKNetworkRoomContext>(null);
+              
             }
+        }
+
+        public INetworkContext GetCurrnetNetworkContext()
+        {
+            // TODO: Ref
+            if (_projectMirrorSDKNetworkContext != null) return _projectMirrorSDKNetworkContext;
+            if (_projectMirrorSDKNetworkRoomContext != null) return _projectMirrorSDKNetworkRoomContext;
+      
+            return null;
         }
     }
 }

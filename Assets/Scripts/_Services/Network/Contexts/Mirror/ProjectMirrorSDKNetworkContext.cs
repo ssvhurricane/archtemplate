@@ -8,13 +8,13 @@ namespace Services.Network
     public class ProjectMirrorSDKNetworkContext : NetworkManager, INetworkContext, IEssence
     {
         // TODO:
-        public EssenceType EssenceType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public EssenceType EssenceType { get; set; }
 
-        public bool IsShown => throw new System.NotImplementedException();
+        public bool IsShown { get; protected set; } = false;
 
-        public string Id { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public CreationMethod CreationMethod { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public OwnerType OwnerType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string Id { get; set; }
+        public CreationMethod CreationMethod { get; set; }
+        public OwnerType OwnerType { get; set; }
 
         public GameObject GetGameObject()
         {
@@ -23,17 +23,27 @@ namespace Services.Network
 
         public void Hide()
         {
-            throw new System.NotImplementedException();
+            // TODO:
         }
 
         public void Initialize(Transform parent)
         {
-            throw new System.NotImplementedException();
+            // TODO:
+        }
+
+        public new void StartServer()
+        {
+            // TODO:
+        }
+
+        public new void StopServer()
+        {
+            // TODO:
         }
 
         public void Show()
         {
-            throw new System.NotImplementedException();
+           // TODO:
         }
     }
 }
