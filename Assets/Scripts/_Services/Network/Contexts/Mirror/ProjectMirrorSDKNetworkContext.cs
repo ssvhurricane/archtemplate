@@ -21,6 +21,11 @@ namespace Services.Network
             throw new System.NotImplementedException();
         }
 
+        public void Show()
+        {
+           // TODO:
+        }
+
         public void Hide()
         {
             // TODO:
@@ -41,9 +46,13 @@ namespace Services.Network
             // TODO:
         }
 
-        public void Show()
-        {
-           // TODO:
-        }
+        public new void StartClient() { }
+
+        public new void StopClient() { }
+
+        public new void StartHost() { }
+
+        public new void StopHost() { }
+
     }
 }

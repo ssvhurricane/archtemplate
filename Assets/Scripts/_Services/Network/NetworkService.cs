@@ -75,8 +75,29 @@ namespace Services.Network
 
         private void OnConnect(string hostName, NetworkConnectAsType networkConnectAsType)
         {
-            // TODO:
-            StartServer();
+            switch (networkConnectAsType)
+            {
+                case NetworkConnectAsType.Client:
+                    {
+                        this.StartClient();
+
+                        break;
+                    }
+
+                case NetworkConnectAsType.Host:
+                    {
+                        this.StartHost();
+
+                        break;
+                    }
+                case NetworkConnectAsType.Server:
+                    {
+                        this.StartServer();
+
+                        break;
+                    }
+            }
+          
         }
 
         private void OnDisconnect()
@@ -89,10 +110,30 @@ namespace Services.Network
             _mirrorSDKController.GetCurrnetNetworkContext().StartServer();
         }
 
+        private void StopServer()
+        {
+            _mirrorSDKController.GetCurrnetNetworkContext().StopServer();
+        }
+
         private void StartClient()
         {
-            // TODO:
+            _mirrorSDKController.GetCurrnetNetworkContext().StartClient();
         }
-    
+
+        private void StopClient()
+        {
+            _mirrorSDKController.GetCurrnetNetworkContext().StopClient();
+        }
+
+        private void StartHost()
+        {
+            _mirrorSDKController.GetCurrnetNetworkContext().StartHost();
+        }
+
+        private void StopHost()
+        {
+            _mirrorSDKController.GetCurrnetNetworkContext().StopHost();
+        }
+
     }
 }

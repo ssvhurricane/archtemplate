@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 using UniRx;
+using System.Linq;
+using Services.Network;
 
 namespace View.Window
 {
@@ -26,6 +28,8 @@ namespace View.Window
 
         private IDisposable _disposableConnectButton;
 
+        private NetworkConnectAsType _networkConnectAsType = NetworkConnectAsType.Server;
+
         [Inject]
         public void Constrcut(SignalBus signalBus)
         {
@@ -39,7 +43,30 @@ namespace View.Window
 
             _disposableConnectButton = ConnectionButton
            .OnClickAsObservable()
-           .Subscribe(_ => signalBus.Fire(new NetworkServiceSignals.Connect(InputFieldHostName.text, Services.Network.NetworkConnectAsType.Server))); // TODO:
+           .Subscribe(_ =>
+           {
+               switch (DropdownSelectAs.value)
+               {
+                   case 0:
+                       {
+                           _networkConnectAsType = NetworkConnectAsType.Client;
+                           break;
+                       }
+                   case 1:
+                       {
+                           _networkConnectAsType = NetworkConnectAsType.Host;
+                           break;
+                       }
+                   case 2:
+                       {
+                           _networkConnectAsType = NetworkConnectAsType.Server;
+                           break;
+                       }
+               }
+              
+               signalBus.Fire(new NetworkServiceSignals.Connect(InputFieldHostName.text, _networkConnectAsType));
+
+           }); // TODO:
 
         }
 

@@ -3,6 +3,7 @@ namespace Services.Network
     public enum NetworkContextType 
     {
         Basic,
-        Room
+        Room,
+        BigRoom // TODO: BattleRoyale
     }
 }

@@ -1,3 +1,4 @@
+using Constants;
 using Mirror;
 using Services.Essence;
 using UnityEngine;
@@ -29,6 +30,14 @@ namespace Services.Network
 
         public void Initialize(Transform parent)
         {
+            // Setup
+            dontDestroyOnLoad = true;
+            runInBackground = true;
+            autoStartServerBuild = false;
+
+            offlineScene = SceneServiceConstants.MainMenu;
+            onlineScene = SceneServiceConstants.Room;
+
             transform.SetParent(parent, false);
             transform.SetAsLastSibling();
         }
@@ -36,12 +45,31 @@ namespace Services.Network
         public new void StartServer()
         {
             base.StartServer();
-            // TODO:
         }
 
         public new void StopServer()
         {
-            // TODO:
+            base.StopServer();
+        }
+
+        public new void StartClient()
+        {
+            base.StartClient();
+        }
+
+        public new void StopClient()
+        {
+            base.StopClient();
+        }
+
+        public new void StartHost()
+        {
+            base.StartHost();
+        }
+
+        public new void StopHost()
+        {
+            base.StopHost();
         }
 
         public void Show()

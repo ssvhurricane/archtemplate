@@ -45,12 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11b8ea2d4ba464c5b86df8c05579690b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 1
-  runInBackground: 1
-  autoStartServerBuild: 1
+  dontDestroyOnLoad: 0
+  runInBackground: 0
+  autoStartServerBuild: 0
   serverTickRate: 30
-  offlineScene: Assets/Scenes/MainMenu.unity
-  onlineScene: Assets/Scenes/Levels/Online/Room.unity
+  offlineScene: 
+  onlineScene: 
   transport: {fileID: 3696948599377004181}
   networkAddress: localhost
   maxConnections: 100
