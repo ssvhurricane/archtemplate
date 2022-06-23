@@ -152,13 +152,13 @@ namespace Presenters.Window
                         _netConnectionPresenter.ShowView();
                         _netConnectionView = (NetConnectionView)_netConnectionPresenter.GetView();
 
-                        if (_netConnectionView._backButton != null)
+                        if (_netConnectionView.BackButton != null)
                         {
                             OnDispose(_disposableBackButton);
 
-                            _disposableBackButton = _netConnectionView._backButton
+                            _disposableBackButton = _netConnectionView.BackButton
                            .OnClickAsObservable()
-                           .Subscribe(_ => OnNetConnectionViewButtonClick(_netConnectionView._backButton.GetInstanceID()));
+                           .Subscribe(_ => OnNetConnectionViewButtonClick(_netConnectionView.BackButton.GetInstanceID()));
                         }
 
                         _windowService.HideWindow<MainMenuView>();
@@ -227,7 +227,7 @@ namespace Presenters.Window
 
         private void OnNetConnectionViewButtonClick(int buttonId)
         {
-            if (buttonId == _netConnectionView._backButton.GetInstanceID())
+            if (buttonId == _netConnectionView.BackButton.GetInstanceID())
             {
                 _logService.ShowLog(GetType().Name,
                    Services.Log.LogType.Message,

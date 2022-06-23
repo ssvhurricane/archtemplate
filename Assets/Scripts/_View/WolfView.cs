@@ -5,7 +5,7 @@ using Zenject;
 
 namespace View
 {
-    public class WolfView : BaseEssence
+    public class WolfView : NetworkEssence
     {
         [SerializeField] public Animator Animator;
         [SerializeField] protected EssenceType Layer;

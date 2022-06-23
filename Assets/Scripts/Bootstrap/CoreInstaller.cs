@@ -121,6 +121,10 @@ namespace Bootstrap
             Container.DeclareSignal<AnchorServiceSignals.Add>();
             Container.DeclareSignal<AnchorServiceSignals.Activate>();
             Container.DeclareSignal<AnchorServiceSignals.Deactivate>();
+
+            // Network Service Signals.
+            Container.DeclareSignal<NetworkServiceSignals.Connect>();
+            Container.DeclareSignal<NetworkServiceSignals.Disconnect>();
         }
 
        public void InstallModels()

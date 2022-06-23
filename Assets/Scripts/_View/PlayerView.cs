@@ -6,7 +6,7 @@ using Zenject;
 
 namespace View
 {
-    public class PlayerView : BaseEssence
+    public class PlayerView : NetworkEssence
     {
         [SerializeField] public TextMeshProUGUI PlayerName;
 

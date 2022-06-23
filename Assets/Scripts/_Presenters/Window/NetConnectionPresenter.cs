@@ -58,10 +58,6 @@ namespace Presenters.Window
                 if (holderTansform != null)
                     _netConnectionView = _factoryService.Spawn<NetConnectionView>(holderTansform);
             }
-
-
-
-            _networkService.StartServer();
         }
 
         public IWindow GetView() 

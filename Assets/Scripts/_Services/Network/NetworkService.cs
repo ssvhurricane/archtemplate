@@ -1,4 +1,5 @@
 using Data.Settings;
+using Signals;
 using Zenject;
 
 namespace Services.Network
@@ -25,6 +26,16 @@ namespace Services.Network
             _customSDKController = customSDKController;
 
             _networkServiceSettings = networkServiceSettings;
+
+            _signalBus.Subscribe<NetworkServiceSignals.Connect>(signal =>
+            {
+                OnConnect(signal.Host, signal.NetworkConnectAsType);
+            });
+
+            _signalBus.Subscribe<NetworkServiceSignals.Disconnect>(signal =>
+            {
+                OnDisconnect();
+            });
         }
 
         public void Initialize()
@@ -47,17 +58,6 @@ namespace Services.Network
             }
         }
 
-        public void StartServer()
-        {
-            _mirrorSDKController.GetCurrnetNetworkContext().StartServer();
-        }
-
-        public void StartClient()
-        {
-            // TODO:
-        }
-
-
         public NetworkType GetNetworkType() 
         {
             return _networkServiceSettings.NetworkType;
@@ -72,5 +72,27 @@ namespace Services.Network
         { 
             return _networkServiceSettings.NetworkAuthMode;
         }
+
+        private void OnConnect(string hostName, NetworkConnectAsType networkConnectAsType)
+        {
+            // TODO:
+            StartServer();
+        }
+
+        private void OnDisconnect()
+        {
+            // TODO:
+        }
+
+        private void StartServer()
+        {
+            _mirrorSDKController.GetCurrnetNetworkContext().StartServer();
+        }
+
+        private void StartClient()
+        {
+            // TODO:
+        }
+    
     }
 }
