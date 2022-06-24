@@ -214,7 +214,7 @@ namespace Presenters.Window
                 _windowService.ClearServiceValues();
                 _itemService.ClearServiceValues();
 
-                _sceneService.LoadLevel(SceneServiceConstants.MainMenu, SceneService.LoadMode.Unitask);
+                _sceneService.LoadLevelAdvanced(SceneServiceConstants.MainMenu, SceneService.LoadMode.Unitask);
             }
         }
         private void OnGameSettingsViewButtonClick(int buttonId)

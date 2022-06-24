@@ -25,7 +25,41 @@ namespace Services.Scene
             _sceneServiceSettings = sceneServiceSettings;
         }
 
-        public async void LoadLevel(string id, LoadMode loadMode = LoadMode.Unirx)
+        public AsyncOperation LoadLevelBase(string id)
+        {
+            AsyncOperation asyncOperation = null;
+
+            foreach (var item in _sceneServiceSettings)
+            {
+                _nextScene = item;
+
+                if (_loadedScene != null
+                    && item.Id == id
+                    && !item.Level.IsSingleScene
+                    && !item.Level.Additive)
+                {
+                    asyncOperation = SceneManager
+                         .LoadSceneAsync(_loadedScene.Level.ScenePath);
+                }
+                else
+                {
+                    if (!SceneManager.GetSceneByName(_nextScene.Level.Name).isLoaded && item.Id == id)
+                    {
+                        _loadedScene = _nextScene;
+
+                        asyncOperation = SceneManager.LoadSceneAsync(_nextScene.Level.ScenePath,
+                                                         _nextScene.Level.IsSingleScene ? LoadSceneMode.Single : LoadSceneMode.Additive);
+
+                        if(asyncOperation != null)
+                                asyncOperation.completed += _ => _signalBus.TryFire(new SceneServiceSignals.SceneLoadingCompleted(_loadedScene.Id));
+                    }
+                }
+            }
+
+            return asyncOperation;
+        }
+
+        public async void LoadLevelAdvanced(string id, LoadMode loadMode = LoadMode.Unirx)
         {
            
             foreach (var item in _sceneServiceSettings) 
@@ -165,6 +199,7 @@ namespace Services.Scene
             await SceneManager
              .LoadSceneAsync(_loadedScene.Level.ScenePath);
         }
+
 
         public enum LoadMode 
         {

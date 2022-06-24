@@ -143,7 +143,7 @@ namespace Presenters.Window
 
                 if (projectType == ProjectType.Offline)
                 {
-                    _sceneService.LoadLevel(SceneServiceConstants.OfflineLevel1, SceneService.LoadMode.Unitask);
+                    _sceneService.LoadLevelAdvanced(SceneServiceConstants.OfflineLevel1, SceneService.LoadMode.Unitask);
                 }
                 else if(projectType == ProjectType.Online)
                 {
@@ -166,7 +166,7 @@ namespace Presenters.Window
                     }
                     else if (networkAuthMode == NetworkAuthMode.Simple)
                     {
-                        _sceneService.LoadLevel(SceneServiceConstants.Room, SceneService.LoadMode.Unitask);
+                        _sceneService.LoadLevelAdvanced(SceneServiceConstants.Room, SceneService.LoadMode.Unitask);
                     }
                     
                     // ToDo clear subscribe, etc...
