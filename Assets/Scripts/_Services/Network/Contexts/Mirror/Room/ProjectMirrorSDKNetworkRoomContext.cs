@@ -7,7 +7,11 @@ using View;
 using Zenject;
 using Mirror;
 using Mirror.Examples.NetworkRoom;
-
+using Bootstrap;
+using Presenters.Window;
+using Presenters;
+using View.Camera;
+using Services.Input;
 
 namespace Services.Network
 {
@@ -23,6 +27,10 @@ namespace Services.Network
 
         
         private ISceneService _sceneService;
+        private MainHUDPresenter _mainHUDPresenter;
+        private PlayerPresenter _playerPresenter;
+        private CameraPresenter _cameraPresenter;
+        private InputService _inputService;
 
         [Inject]
         public void Construct(ISceneService sceneService)
@@ -49,6 +57,9 @@ namespace Services.Network
 
             offlineScene = SceneServiceConstants.MainMenu;
             onlineScene = SceneServiceConstants.Room;
+
+            RoomScene =  SceneServiceConstants.Room;
+            GameplayScene = SceneServiceConstants.OnlineLevel1;
 
             transform.SetParent(parent, false);
             transform.SetAsLastSibling();
@@ -167,6 +178,38 @@ namespace Services.Network
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="roomPlayer"></param>
+        public override void SceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
+        {
+            // TODO: This temp, meed move to project presenter.
+            /*
+            var sceneContextDynamic = SceneContext.Create();
+            sceneContextDynamic.AddNormalInstaller(new GameInstaller());
+            sceneContextDynamic.Awake();
+
+            _mainHUDPresenter = sceneContextDynamic.Container.Resolve<MainHUDPresenter>();
+            _mainHUDPresenter.ShowView();
+
+            _playerPresenter = sceneContextDynamic.Container.Resolve<PlayerPresenter>();
+            _playerPresenter.ShowView();
+
+            //_wolfPresenter = sceneContextDynamic.Container.Resolve<WolfPresenter>();
+            // _wolfPresenter.ShowView();
+
+            _cameraPresenter = sceneContextDynamic.Container.Resolve<CameraPresenter>();
+            _cameraPresenter.ShowView<TopDownCameraView>(CameraServiceConstants.TopDownCamera, _playerPresenter.GetView());
+
+            _playerPresenter.HideView();
+
+            _inputService = sceneContextDynamic.Container.Resolve<Input.InputService>();
+            _inputService.TakePossessionOfObject(_playerPresenter);
+            */
+        }
+
         public new void StopServer()
         {
             base.StopServer();
@@ -176,6 +219,7 @@ namespace Services.Network
         {
             base.StartClient();
         }
+
 
         public new void StopClient()
         {

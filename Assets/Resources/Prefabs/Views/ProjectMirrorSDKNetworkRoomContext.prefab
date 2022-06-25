@@ -58,16 +58,18 @@ MonoBehaviour:
   playerPrefab: {fileID: 4292413336086662627, guid: 78292b9bc4b554848aeec03a8b284a40, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 1139254171913846, guid: 52f1c9ea06cfd154cb68ff9d1b66fc13, type: 3}
   clientSceneOperation: 0
   showRoomGUI: 1
   minPlayers: 1
   roomPlayerPrefab: {fileID: 8533301030775066144, guid: 06dacd1a323ed436bbe345a861059803, type: 3}
-  RoomScene: Assets/Scenes/Levels/Online/Room.unity
-  GameplayScene: Assets/Scenes/Levels/Online/OnlineLevel1.unity
+  RoomScene: 
+  GameplayScene: 
   _allPlayersReady: 0
   roomSlots: []
   clientIndex: 0
+  rewardPrefab: {fileID: 1139254171913846, guid: 52f1c9ea06cfd154cb68ff9d1b66fc13, type: 3}
 --- !u!114 &3696948599377004181
 MonoBehaviour:
   m_ObjectHideFlags: 0

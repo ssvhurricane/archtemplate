@@ -93,7 +93,7 @@ namespace Presenters
                 if (data.Data == SceneServiceConstants.OnlineLevel1)
                 {
                     // TODO:
-                    CreateGame();
+                   // CreateGame();
                 }
 
             });
@@ -120,10 +120,10 @@ namespace Presenters
 
         private void CreateRoom() 
         {
-            // TODO:
+            // TODO: Need Update Spawn
             _logService.ShowLog(GetType().Name,
                            Services.Log.LogType.Message,
-                           $"CreateLobby!",
+                           $"Create Room!",
                            LogOutputLocationType.Console);
 
             var sceneContextDynamic = SceneContext.Create();
@@ -133,15 +133,15 @@ namespace Presenters
             _roomPresenter = sceneContextDynamic.Container.Resolve<RoomPresenter>();
             _roomPresenter.ShowView();
 
-            _playerPresenter = sceneContextDynamic.Container.Resolve<PlayerPresenter>();
-            _playerPresenter.ShowView();
-            _playerPresenter.GetView().GetGameObject().GetComponent<Rigidbody>().useGravity = false;
+           // _playerPresenter = sceneContextDynamic.Container.Resolve<PlayerPresenter>();
+          //  _playerPresenter.ShowView();
+          //  _playerPresenter.GetView().GetGameObject().GetComponent<Rigidbody>().useGravity = false;
 
             //_wolfPresenter = sceneContextDynamic.Container.Resolve<WolfPresenter>();
             //_wolfPresenter.ShowView();
 
-            _cameraPresenter = sceneContextDynamic.Container.Resolve<CameraPresenter>();
-            _cameraPresenter.ShowView<TPSCameraView>(CameraServiceConstants.TPSCamera, _playerPresenter.GetView());
+           // _cameraPresenter = sceneContextDynamic.Container.Resolve<CameraPresenter>();
+          //  _cameraPresenter.ShowView<TPSCameraView>(CameraServiceConstants.TPSCamera, _playerPresenter.GetView());
 
 
             //_inputService = sceneContextDynamic.Container.Resolve<InputService>();
@@ -150,6 +150,7 @@ namespace Presenters
 
         private void CreateGame()
         {
+            // TODO: Update spawn
             var sceneContextDynamic = SceneContext.Create();
             sceneContextDynamic.AddNormalInstaller(new GameInstaller());
             sceneContextDynamic.Awake();
@@ -160,12 +161,13 @@ namespace Presenters
             _playerPresenter = sceneContextDynamic.Container.Resolve<PlayerPresenter>();
             _playerPresenter.ShowView();
 
-            _wolfPresenter = sceneContextDynamic.Container.Resolve<WolfPresenter>();
-            _wolfPresenter.ShowView();
+           //_wolfPresenter = sceneContextDynamic.Container.Resolve<WolfPresenter>();
+           // _wolfPresenter.ShowView();
 
             _cameraPresenter = sceneContextDynamic.Container.Resolve<CameraPresenter>();
             _cameraPresenter.ShowView<TopDownCameraView>(CameraServiceConstants.TopDownCamera, _playerPresenter.GetView());
 
+            _playerPresenter.HideView();
 
             _inputService = sceneContextDynamic.Container.Resolve<InputService>();
             _inputService.TakePossessionOfObject(_playerPresenter);
