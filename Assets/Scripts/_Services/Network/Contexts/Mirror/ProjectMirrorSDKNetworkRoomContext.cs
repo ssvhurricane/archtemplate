@@ -1,5 +1,4 @@
 using Constants;
-using Cysharp.Threading.Tasks;
 using Mirror;
 using Services.Essence;
 using Services.Scene;
@@ -23,7 +22,7 @@ namespace Services.Network
         private ISceneService _sceneService;
 
         [Inject]
-        public void Construct(DiContainer temp, ISceneService sceneService)
+        public void Construct(ISceneService sceneService)
         {
             _sceneService = sceneService;
         }
@@ -41,7 +40,6 @@ namespace Services.Network
 
         public void Initialize(Transform parent)
         {
-            // Setup
             dontDestroyOnLoad = true;
             runInBackground = true;
             autoStartServerBuild = true;
@@ -62,7 +60,57 @@ namespace Services.Network
         /// Need ovverride for use SceneService.
         /// </summary>
         /// <param name="newSceneName"></param>
-        public override async void ServerChangeScene(string newSceneName)
+        /// <param name="sceneOperation"></param>
+        /// <param name="customHandling"></param>
+        public override void ClientChangeScene(string newSceneName, SceneOperation sceneOperation = SceneOperation.Normal, bool customHandling = false)
+        {
+            // TODO:
+            if (string.IsNullOrWhiteSpace(newSceneName))
+            {
+                Debug.LogError("ClientChangeScene empty scene name");
+                return;
+            }
+
+            //Debug.Log($"ClientChangeScene newSceneName: {newSceneName} networkSceneName{networkSceneName}");
+
+            // Let client prepare for scene change
+            OnClientChangeScene(newSceneName, sceneOperation, customHandling);
+
+            // After calling OnClientChangeScene, exit if server since server is already doing
+            // the actual scene change, and we don't need to do it for the host client
+            if (NetworkServer.active)
+                return;
+
+            // set client flag to stop processing messages while loading scenes.
+            // otherwise we would process messages and then lose all the state
+            // as soon as the load is finishing, causing all kinds of bugs
+            // because of missing state.
+            // (client may be null after StopClient etc.)
+            // Debug.Log("ClientChangeScene: pausing handlers while scene is loading to avoid data loss after scene was loaded.");
+            NetworkClient.isLoadingScene = true;
+
+            // Cache sceneOperation so we know what was requested by the
+            // Scene message in OnClientChangeScene and OnClientSceneChanged
+            clientSceneOperation = sceneOperation;
+
+            // scene handling will happen in overrides of OnClientChangeScene and/or OnClientSceneChanged
+            // Do not call FinishLoadScene here. Custom handler will assign loadingSceneAsync and we need
+            // to wait for that to finish. UpdateScene already checks for that to be not null and isDone.
+            // if (customHandling)
+            //     return;
+
+            loadingSceneAsync = _sceneService.LoadLevelBase(newSceneName);
+
+            // don't change the client's current networkSceneName when loading additive scene content
+            if (sceneOperation == SceneOperation.Normal)
+                networkSceneName = newSceneName;
+        }
+
+        /// <summary>
+        /// Need ovverride for use SceneService.
+        /// </summary>
+        /// <param name="newSceneName"></param>
+        public override void ServerChangeScene(string newSceneName)
         {
             if (string.IsNullOrWhiteSpace(newSceneName))
             {
