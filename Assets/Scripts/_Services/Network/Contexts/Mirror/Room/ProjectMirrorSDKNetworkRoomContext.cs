@@ -5,10 +5,13 @@ using Services.Scene;
 using UnityEngine;
 using View;
 using Zenject;
+using Mirror;
+using Mirror.Examples.NetworkRoom;
+
 
 namespace Services.Network
 {
-    public class ProjectMirrorSDKNetworkRoomContext : NetworkRoomManager, INetworkContext, IEssence
+    public class ProjectMirrorSDKNetworkRoomContext : NetworkRoomManagerExtension, INetworkContext, IEssence
     {
         public EssenceType EssenceType { get; set; }
 
@@ -149,6 +152,19 @@ namespace Services.Network
             startPositions.Clear();
           
 
+        }
+
+        public override void OnGUI()
+        {
+            base.OnGUI();
+
+            if (allPlayersReady && showStartButton && GUI.Button(new Rect(150, 300, 120, 20), "START GAME"))
+            {
+                // set to false to hide it in the game scene
+                showStartButton = false;
+
+                ServerChangeScene(GameplayScene);
+            }
         }
 
         public new void StopServer()

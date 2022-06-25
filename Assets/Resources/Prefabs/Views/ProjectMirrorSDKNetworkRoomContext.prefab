@@ -59,9 +59,10 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs: []
+  clientSceneOperation: 0
   showRoomGUI: 1
   minPlayers: 1
-  roomPlayerPrefab: {fileID: 114033720796874720, guid: deae2134a1d77704b9c595efe69767dd, type: 3}
+  roomPlayerPrefab: {fileID: 8533301030775066144, guid: 06dacd1a323ed436bbe345a861059803, type: 3}
   RoomScene: Assets/Scenes/Levels/Online/Room.unity
   GameplayScene: Assets/Scenes/Levels/Online/OnlineLevel1.unity
   _allPlayersReady: 0

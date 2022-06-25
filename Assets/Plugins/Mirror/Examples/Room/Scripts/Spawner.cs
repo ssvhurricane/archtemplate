@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace Mirror.Examples.NetworkRoom
 {
-    internal class Spawner
+    public class Spawner
     {
-        internal static void InitialSpawn()
+        public static void InitialSpawn()
         {
             if (!NetworkServer.active) return;
 
@@ -12,7 +12,7 @@ namespace Mirror.Examples.NetworkRoom
                 SpawnReward();
         }
 
-        internal static void SpawnReward()
+        public static void SpawnReward()
         {
             if (!NetworkServer.active) return;
 
