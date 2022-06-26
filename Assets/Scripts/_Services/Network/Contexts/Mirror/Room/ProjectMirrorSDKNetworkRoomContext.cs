@@ -165,8 +165,6 @@ namespace Services.Network
 
             startPositionIndex = 0;
             startPositions.Clear();
-          
-
         }
 
         public override void OnGUI()
@@ -181,7 +179,7 @@ namespace Services.Network
                 this.ServerChangeScene(GameplayScene);
             }
         }
-
+        /*
         /// <summary>
         /// 
         /// </summary>
@@ -225,7 +223,7 @@ namespace Services.Network
             temp.NetInitView(_cameraPresenter,_playerPresenter, _inputService);
             
         }
-
+        */
         public new void StopServer()
         {
             base.StopServer();
