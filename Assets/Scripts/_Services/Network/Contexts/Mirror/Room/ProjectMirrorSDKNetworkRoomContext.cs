@@ -180,6 +180,21 @@ namespace Services.Network
             }
         }
         /*
+        public override void OnServerAddPlayer(NetworkConnectionToClient conn)
+        {
+            Transform startPos = GetStartPosition(); 
+           
+            if (startPos != null) _playerPresenter.ShowView(playerPrefab, startPos);
+            else _playerPresenter.ShowView();
+
+            GameObject player = _playerPresenter.GetView().GetGameObject();
+
+            // instantiating a "Player" prefab gives it the name "Player(clone)"
+            // => appending the connectionId is WAY more useful for debugging!
+            player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
+            NetworkServer.AddPlayerForConnection(conn, player);
+        }*/
+        /*
         /// <summary>
         /// 
         /// </summary>
@@ -206,7 +221,7 @@ namespace Services.Network
             {
                 Transform startPos = GetStartPosition();
              
-                if (startPos != null) _playerPresenter.ShowView(startPos);
+                if (startPos != null) _playerPresenter.ShowView(playerPrefab, startPos);
                 else _playerPresenter.ShowView();
 
                 gamePlayer = _playerPresenter.GetView().GetGameObject();
@@ -217,13 +232,9 @@ namespace Services.Network
             
             // replace room player with game player
             NetworkServer.ReplacePlayerForConnection(conn, gamePlayer, true);
-
-            var temp =(PlayerView)(_playerPresenter.GetView());
-
-            temp.NetInitView(_cameraPresenter,_playerPresenter, _inputService);
             
-        }
-        */
+        }*/
+        
         public new void StopServer()
         {
             base.StopServer();

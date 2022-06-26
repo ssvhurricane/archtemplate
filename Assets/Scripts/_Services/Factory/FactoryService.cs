@@ -1,9 +1,6 @@
 using Services.Essence;
 using Services.Resources;
 using Services.Window;
-using Signals;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using View;
 using Zenject;
@@ -21,6 +18,7 @@ namespace Services.Factory
         private const string IEssence = "IEssence";
 
         private const string IWindow = "IWindow";
+
         public FactoryService(DiContainer container, ResourcesService resources, SignalBus signalBus) 
         {
             _container = container;
@@ -30,23 +28,24 @@ namespace Services.Factory
             _signalBus = signalBus;
         }
 
-        public TView Spawn<TView>(Transform parentTransform) where TView : class, IView
+        public TView Spawn<TView>(Transform parentTransform, GameObject prefab = null) where TView : class, IView
         {
-            GameObject prefab = null;
+            GameObject innerPrefab = null;
 
             TView resultView = null;
 
             if (typeof(TView).GetInterface(IEssence) != null) 
             {
-                prefab = _resources.GetResource(TypeResource.View, typeof(TView));
 
-                if (prefab == null)
+                innerPrefab = prefab == null ? _resources.GetResource(TypeResource.View, typeof(TView)) : prefab;
+
+                if (innerPrefab == null)
                 {
                     Debug.LogWarning("[FactoryService] -> can't find essence for type : " + typeof(TView));
                     return null;
                 }
 
-                resultView = _container.InstantiatePrefabForComponent<TView>(prefab.gameObject); 
+                resultView = _container.InstantiatePrefabForComponent<TView>(innerPrefab.gameObject); 
                 
                 if (resultView == null)
                 {
@@ -58,15 +57,15 @@ namespace Services.Factory
             }
             else if (typeof(TView).GetInterface(IWindow) != null) 
             {
-                prefab = _resources.GetResource(TypeResource.Window, typeof(TView)); 
+                innerPrefab = prefab == null ? _resources.GetResource(TypeResource.Window, typeof(TView)) : prefab; 
                 
-                if (prefab == null)
+                if (innerPrefab == null)
                 {
                     Debug.LogWarning("[FactoryService] -> can't find window for type : " + typeof(TView));
                     return null;
                 }
 
-                resultView = _container.InstantiatePrefabForComponent<TView>(prefab.gameObject); 
+                resultView = _container.InstantiatePrefabForComponent<TView>(innerPrefab.gameObject); 
                 
                 if (resultView == null)
                 {

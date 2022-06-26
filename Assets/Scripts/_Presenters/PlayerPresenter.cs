@@ -53,7 +53,7 @@ namespace Presenters
                 LogOutputLocationType.Console);
         }
 
-        public void ShowView(Transform hTransform = null) 
+        public void ShowView(GameObject prefab = null, Transform hTransform = null) 
         {
             if (_essenceService.IsEssenceShowing<PlayerView>())
                 return;
@@ -69,10 +69,10 @@ namespace Presenters
                     Transform holderTansform = _holderService._essenceTypeTypeHolders.FirstOrDefault(holder => holder.Key == EssenceType.PlayerGameObject).Value;
 
                     if (holderTansform != null)
-                        _playerView = _factoryService.Spawn<PlayerView>(holderTansform);
+                        _playerView = _factoryService.Spawn<PlayerView>(holderTansform, prefab);
                 }
                 else
-                    _playerView = _factoryService.Spawn<PlayerView>(hTransform);
+                    _playerView = _factoryService.Spawn<PlayerView>(hTransform, prefab);
             }
 
             //ToDo...Remove Listener

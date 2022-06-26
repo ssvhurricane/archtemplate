@@ -24,22 +24,22 @@ namespace View
         [SerializeField] public GameObject SecondJointHand;
         [SerializeField] public GameObject SecondJointBack;
 
-        private SignalBus _signalBus;
-       
-        private CameraPresenter _cameraPresenter;
-        
-        private PlayerPresenter _playerPresenter;
-        
-        private InputService _inputService;
+        [Inject] private SignalBus _signalBus;
+
+        [Inject] private CameraPresenter _cameraPresenter;
+
+        [Inject] private PlayerPresenter _playerPresenter;
+
+        [Inject] private InputService _inputService;
 
         [Inject]
-        public void Constrcut(SignalBus signalBus)
+        public void Constrcut(/*SignalBus signalBus*/)
         {
-            _signalBus = signalBus;
+          //  _signalBus = signalBus;
 
             EssenceType = Layer;
 
-            signalBus.Fire(new EssenceServiceSignals.Register(this));
+            _signalBus.Fire(new EssenceServiceSignals.Register(this));
            
         }
        

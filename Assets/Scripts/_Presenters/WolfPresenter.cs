@@ -47,7 +47,7 @@ namespace Presenters
                 LogOutputLocationType.Console);
         }
         
-        public void ShowView(Transform hTransform = null)
+        public void ShowView(GameObject prefab = null, Transform hTransform = null)
         {
             if (_essenceService.IsEssenceShowing<WolfView>()) return;
 

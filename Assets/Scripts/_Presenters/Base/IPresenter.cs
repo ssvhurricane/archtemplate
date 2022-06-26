@@ -9,7 +9,7 @@ namespace Presenters
     /// </summary>
     public interface IPresenter
     {
-        public void ShowView(Transform hTransform = null);
+        public void ShowView(GameObject prefab = null, Transform hTransform = null);
 
         public void HideView();
 
