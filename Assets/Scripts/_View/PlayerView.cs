@@ -1,6 +1,7 @@
 using Constants;
 using Mirror;
 using Presenters;
+using Presenters.Window;
 using Services.Essence;
 using Services.Input;
 using Signals;
@@ -24,23 +25,36 @@ namespace View
         [SerializeField] public GameObject SecondJointHand;
         [SerializeField] public GameObject SecondJointBack;
 
-        [Inject] private SignalBus _signalBus;
+        private SignalBus _signalBus;
 
-        [Inject] private CameraPresenter _cameraPresenter;
+        private MainHUDPresenter _mainHUDPresenter;
 
-        [Inject] private PlayerPresenter _playerPresenter;
+        private CameraPresenter _cameraPresenter;
 
-        [Inject] private InputService _inputService;
+        private PlayerPresenter _playerPresenter;
+
+        private InputService _inputService;
 
         [Inject]
-        public void Constrcut(/*SignalBus signalBus*/)
+        public void Constrcut(SignalBus signalBus, 
+            CameraPresenter cameraPresenter,
+            PlayerPresenter playerPresenter, MainHUDPresenter mainHUDPresenter,
+            InputService inputService
+            )
         {
-          //  _signalBus = signalBus;
+            _signalBus = signalBus;
 
-            EssenceType = Layer;
+            _cameraPresenter = cameraPresenter;
+
+            _playerPresenter = playerPresenter;
+
+            _mainHUDPresenter = mainHUDPresenter;
+
+            _inputService = inputService;
+
+             EssenceType = Layer;
 
             _signalBus.Fire(new EssenceServiceSignals.Register(this));
-           
         }
        
 
@@ -51,16 +65,23 @@ namespace View
             _inputService = inService;
         }
 
+        public override void OnStartServer()
+        {
+            _mainHUDPresenter.ShowView();
+
+            _cameraPresenter.ShowView<TopDownCameraView>(CameraServiceConstants.TopDownCamera, _playerPresenter.GetView());
+
+             //_wolfPresenter.ShowView();
+
+             _inputService.TakePossessionOfObject(_playerPresenter);
+
+            base.OnStartServer(); 
+           
+        }
+      
         public override void OnStartLocalPlayer()
         {
-            if (_signalBus == null) Debug.Log("Bus null");
             
-            //_cameraPresenter.ShowView<TopDownCameraView>(CameraServiceConstants.TopDownCamera, _playerPresenter.GetView());
-            
-           // _wolfPresenter.ShowView();
-
-          //  _inputService.TakePossessionOfObject(_playerPresenter);
-           
         }
 
         public override void OnStopLocalPlayer()

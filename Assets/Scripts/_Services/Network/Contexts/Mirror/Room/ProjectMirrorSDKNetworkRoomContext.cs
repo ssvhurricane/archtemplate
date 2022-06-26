@@ -88,27 +88,14 @@ namespace Services.Network
                 Debug.LogError("ClientChangeScene empty scene name");
                 return;
             }
-
-            //Debug.Log($"ClientChangeScene newSceneName: {newSceneName} networkSceneName{networkSceneName}");
-
-            // Let client prepare for scene change
+      
             OnClientChangeScene(newSceneName, sceneOperation, customHandling);
-
-            // After calling OnClientChangeScene, exit if server since server is already doing
-            // the actual scene change, and we don't need to do it for the host client
+            
             if (NetworkServer.active)
                 return;
-
-            // set client flag to stop processing messages while loading scenes.
-            // otherwise we would process messages and then lose all the state
-            // as soon as the load is finishing, causing all kinds of bugs
-            // because of missing state.
-            // (client may be null after StopClient etc.)
-            // Debug.Log("ClientChangeScene: pausing handlers while scene is loading to avoid data loss after scene was loaded.");
+           
             NetworkClient.isLoadingScene = true;
-
-            // Cache sceneOperation so we know what was requested by the
-            // Scene message in OnClientChangeScene and OnClientSceneChanged
+            
             clientSceneOperation = sceneOperation;
 
             // scene handling will happen in overrides of OnClientChangeScene and/or OnClientSceneChanged
@@ -176,25 +163,10 @@ namespace Services.Network
                 // set to false to hide it in the game scene
                 showStartButton = false;
 
-                this.ServerChangeScene(GameplayScene);
+               base.ServerChangeScene(GameplayScene);
             }
         }
-        /*
-        public override void OnServerAddPlayer(NetworkConnectionToClient conn)
-        {
-            Transform startPos = GetStartPosition(); 
-           
-            if (startPos != null) _playerPresenter.ShowView(playerPrefab, startPos);
-            else _playerPresenter.ShowView();
-
-            GameObject player = _playerPresenter.GetView().GetGameObject();
-
-            // instantiating a "Player" prefab gives it the name "Player(clone)"
-            // => appending the connectionId is WAY more useful for debugging!
-            player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
-            NetworkServer.AddPlayerForConnection(conn, player);
-        }*/
-        /*
+        
         /// <summary>
         /// 
         /// </summary>
@@ -233,7 +205,7 @@ namespace Services.Network
             // replace room player with game player
             NetworkServer.ReplacePlayerForConnection(conn, gamePlayer, true);
             
-        }*/
+        }
         
         public new void StopServer()
         {
