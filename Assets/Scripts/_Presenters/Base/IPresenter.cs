@@ -1,4 +1,5 @@
 using Model;
+using UnityEngine;
 using View;
 
 namespace Presenters
@@ -8,7 +9,7 @@ namespace Presenters
     /// </summary>
     public interface IPresenter
     {
-        public void ShowView();
+        public void ShowView(Transform hTransform = null);
 
         public void HideView();
 

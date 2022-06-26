@@ -5,7 +5,7 @@ using Zenject;
 
 namespace View.Camera
 {
-    public class TopDownCameraView : BaseEssence
+    public class TopDownCameraView : NetworkEssence
     {
         [SerializeField] protected EssenceType Layer;
 

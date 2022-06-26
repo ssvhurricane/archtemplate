@@ -5,7 +5,7 @@ using Zenject;
 
 namespace View.Camera
 {
-    public class SideScrollerCameraView : BaseEssence
+    public class SideScrollerCameraView : NetworkEssence
     {
         [SerializeField] protected EssenceType Layer;
 

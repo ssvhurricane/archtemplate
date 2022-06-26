@@ -5,12 +5,8 @@ using Services.Scene;
 using UnityEngine;
 using View;
 using Zenject;
-using Mirror;
 using Mirror.Examples.NetworkRoom;
-using Bootstrap;
-using Presenters.Window;
 using Presenters;
-using View.Camera;
 using Services.Input;
 
 namespace Services.Network
@@ -24,18 +20,26 @@ namespace Services.Network
         public string Id { get; set; }
         public CreationMethod CreationMethod { get; set; }
         public OwnerType OwnerType { get; set; }
-
         
         private ISceneService _sceneService;
-        private MainHUDPresenter _mainHUDPresenter;
         private PlayerPresenter _playerPresenter;
         private CameraPresenter _cameraPresenter;
         private InputService _inputService;
 
         [Inject]
-        public void Construct(ISceneService sceneService)
+        public void Construct(ISceneService sceneService,
+            PlayerPresenter playerPresenter,
+            CameraPresenter cameraPresenter,
+            InputService inputService
+            )
         {
             _sceneService = sceneService;
+
+            _playerPresenter = playerPresenter;
+
+            _cameraPresenter = cameraPresenter;
+
+            _inputService = inputService;
         }
 
         public GameObject GetGameObject()
@@ -174,7 +178,7 @@ namespace Services.Network
                 // set to false to hide it in the game scene
                 showStartButton = false;
 
-                ServerChangeScene(GameplayScene);
+                this.ServerChangeScene(GameplayScene);
             }
         }
 
@@ -186,28 +190,40 @@ namespace Services.Network
         public override void SceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
         {
             // TODO: This temp, meed move to project presenter.
-            /*
-            var sceneContextDynamic = SceneContext.Create();
-            sceneContextDynamic.AddNormalInstaller(new GameInstaller());
-            sceneContextDynamic.Awake();
+            // Debug.Log($"NetworkRoom SceneLoadedForPlayer scene: {SceneManager.GetActiveScene().path} {conn}");
+            
+            if (IsSceneActive(RoomScene))
+            {
+                // cant be ready in room, add to ready list
+                PendingPlayer pending;
+                pending.conn = conn;
+                pending.roomPlayer = roomPlayer;
+                pendingPlayers.Add(pending);
+                return;
+            }
 
-            _mainHUDPresenter = sceneContextDynamic.Container.Resolve<MainHUDPresenter>();
-            _mainHUDPresenter.ShowView();
+            GameObject gamePlayer = OnRoomServerCreateGamePlayer(conn, roomPlayer);
 
-            _playerPresenter = sceneContextDynamic.Container.Resolve<PlayerPresenter>();
-            _playerPresenter.ShowView();
+            if (gamePlayer == null)
+            {
+                Transform startPos = GetStartPosition();
+             
+                if (startPos != null) _playerPresenter.ShowView(startPos);
+                else _playerPresenter.ShowView();
 
-            //_wolfPresenter = sceneContextDynamic.Container.Resolve<WolfPresenter>();
-            // _wolfPresenter.ShowView();
+                gamePlayer = _playerPresenter.GetView().GetGameObject();
+            }
+           
+            if (!OnRoomServerSceneLoadedForPlayer(conn, roomPlayer, gamePlayer))
+                return;
+            
+            // replace room player with game player
+            NetworkServer.ReplacePlayerForConnection(conn, gamePlayer, true);
 
-            _cameraPresenter = sceneContextDynamic.Container.Resolve<CameraPresenter>();
-            _cameraPresenter.ShowView<TopDownCameraView>(CameraServiceConstants.TopDownCamera, _playerPresenter.GetView());
+            var temp =(PlayerView)(_playerPresenter.GetView());
 
-            _playerPresenter.HideView();
-
-            _inputService = sceneContextDynamic.Container.Resolve<Input.InputService>();
-            _inputService.TakePossessionOfObject(_playerPresenter);
-            */
+            temp.NetInitView(_cameraPresenter,_playerPresenter, _inputService);
+            
         }
 
         public new void StopServer()

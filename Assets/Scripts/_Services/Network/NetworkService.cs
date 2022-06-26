@@ -73,6 +73,15 @@ namespace Services.Network
             return _networkServiceSettings.NetworkAuthMode;
         }
 
+        public INetworkContext GetCurrnetContext()
+        {
+            if(_networkServiceSettings.NetworkEngine == NetworkEngine.Mirror)
+                    return _mirrorSDKController.GetCurrnetNetworkContext();
+            else if (_networkServiceSettings.NetworkEngine == NetworkEngine.Custom)
+                return null;// _customSDKController.GetCurrnetNetworkContext();
+            return null;
+        }
+
         private void OnConnect(string hostName, NetworkConnectAsType networkConnectAsType)
         {
             switch (networkConnectAsType)
@@ -134,6 +143,8 @@ namespace Services.Network
         {
             _mirrorSDKController.GetCurrnetNetworkContext().StopHost();
         }
+
+
 
     }
 }

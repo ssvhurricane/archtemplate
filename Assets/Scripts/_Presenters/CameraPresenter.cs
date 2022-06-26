@@ -53,5 +53,10 @@ namespace Presenters
 
             _cameraService.InitializeCamera(cameraId, baseView, _cameraView);
         }
+
+        public IView GetView()
+        {
+            return _cameraView;
+        }
     }
 }

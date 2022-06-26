@@ -30,21 +30,36 @@ namespace Presenters
         private RoomPresenter _roomPresenter;
 
         private  InputService _inputService;
+        
 
         public ProjectPresenter(SignalBus signalBus,
             LogService logService,
             MainMenuPresenter mainMenuPresenter,
+            MainHUDPresenter mainHUDPresenter,
+            PlayerPresenter playerPresenter,
+            WolfPresenter wolfPresenter,
+            CameraPresenter cameraPresenter,
             ProjectModel projectModel,
             ProjectService projectService,
-            NetworkService networkService
+            NetworkService networkService,
+            RoomPresenter roomPresenter,
+            InputService inputService
            )
         {
             _signalBus = signalBus;
             _logService = logService;
             _mainMenuPresenter = mainMenuPresenter;
+            _mainHUDPresenter = mainHUDPresenter;
+            _playerPresenter = playerPresenter;
+            _wolfPresenter = wolfPresenter;
+            _cameraPresenter = cameraPresenter;
+
             _projectModel = projectModel;
             _projectService = projectService;
             _networkService = networkService;
+            _roomPresenter = roomPresenter;
+
+            _inputService = inputService;
 
             _logService.ShowLog(GetType().Name, 
                 Services.Log.LogType.Message,
@@ -60,7 +75,7 @@ namespace Presenters
                           $"Subscribe SceneServiceSignals.SceneLoadingCompleted, Data = {data.Data}",
                           LogOutputLocationType.Console);
 
-                    _inputService.ClearServiceValues();
+                    _inputService?.ClearServiceValues();
 
                     _mainMenuPresenter.ShowView(_projectService.GetProjectType());
                 }
@@ -78,12 +93,7 @@ namespace Presenters
                     Cursor.visible = false;
                 }
 
-                //if (data.Data == LevelConstants.OfflineLevel1)
-                //{
-                //  etc..
-                //}
-
-                // Onlime Levels.
+                // Online Levels.
                 if (data.Data == SceneServiceConstants.Room)
                 {
                     // TODO:
@@ -93,7 +103,7 @@ namespace Presenters
                 if (data.Data == SceneServiceConstants.OnlineLevel1)
                 {
                     // TODO:
-                   // CreateGame();
+                    CreateGame();
                 }
 
             });
@@ -126,11 +136,11 @@ namespace Presenters
                            $"Create Room!",
                            LogOutputLocationType.Console);
 
-            var sceneContextDynamic = SceneContext.Create();
-            sceneContextDynamic.AddNormalInstaller(new GameInstaller());
-            sceneContextDynamic.Awake();
+           // var sceneContextDynamic = SceneContext.Create();
+          //  sceneContextDynamic.AddNormalInstaller(new GameInstaller());
+           // sceneContextDynamic.Awake();
 
-            _roomPresenter = sceneContextDynamic.Container.Resolve<RoomPresenter>();
+           // _roomPresenter = sceneContextDynamic.Container.Resolve<RoomPresenter>();
             _roomPresenter.ShowView();
 
            // _playerPresenter = sceneContextDynamic.Container.Resolve<PlayerPresenter>();
@@ -150,32 +160,26 @@ namespace Presenters
 
         private void CreateGame()
         {
-            // TODO: Update spawn
-            var sceneContextDynamic = SceneContext.Create();
-            sceneContextDynamic.AddNormalInstaller(new GameInstaller());
-            sceneContextDynamic.Awake();
 
-            _mainHUDPresenter = sceneContextDynamic.Container.Resolve<MainHUDPresenter>();
-            _mainHUDPresenter.ShowView();
+            if (_projectService.GetProjectType() == ProjectType.Offline)
+            {
+                _mainHUDPresenter.ShowView();
+               
+                _playerPresenter.ShowView();
+               
+                // _wolfPresenter.ShowView();
+               
+                _cameraPresenter.ShowView<TopDownCameraView>(CameraServiceConstants.TopDownCamera, _playerPresenter.GetView());
+                
+                _inputService.TakePossessionOfObject(_playerPresenter);
 
-            _playerPresenter = sceneContextDynamic.Container.Resolve<PlayerPresenter>();
-            _playerPresenter.ShowView();
+                //5. Get Game Flow
 
-           //_wolfPresenter = sceneContextDynamic.Container.Resolve<WolfPresenter>();
-           // _wolfPresenter.ShowView();
-
-            _cameraPresenter = sceneContextDynamic.Container.Resolve<CameraPresenter>();
-            _cameraPresenter.ShowView<TopDownCameraView>(CameraServiceConstants.TopDownCamera, _playerPresenter.GetView());
-
-            _playerPresenter.HideView();
-
-            _inputService = sceneContextDynamic.Container.Resolve<InputService>();
-            _inputService.TakePossessionOfObject(_playerPresenter);
-
-            //5. Get Game Flow
-
-            //6. Start Game
-            StartGame();
+                //6. Start Game
+                StartGame();
+            }
+            else if (_projectService.GetProjectType() == ProjectType.Online) { }
+                
         }
 
         private void StartGame()

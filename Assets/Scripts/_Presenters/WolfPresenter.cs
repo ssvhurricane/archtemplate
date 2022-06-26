@@ -47,7 +47,7 @@ namespace Presenters
                 LogOutputLocationType.Console);
         }
         
-        public void ShowView()
+        public void ShowView(Transform hTransform = null)
         {
             if (_essenceService.IsEssenceShowing<WolfView>()) return;
 
