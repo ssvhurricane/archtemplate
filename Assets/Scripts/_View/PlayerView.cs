@@ -27,66 +27,57 @@ namespace View
 
         private SignalBus _signalBus;
 
-        private MainHUDPresenter _mainHUDPresenter;
+        //private MainHUDPresenter _mainHUDPresenter;
 
-        private CameraPresenter _cameraPresenter;
+        //private CameraPresenter _cameraPresenter;
 
-        private PlayerPresenter _playerPresenter;
+        //private PlayerPresenter _playerPresenter;
 
-        private InputService _inputService;
+        //private InputService _inputService;
 
         [Inject]
-        public void Constrcut(SignalBus signalBus, 
-            CameraPresenter cameraPresenter,
-            PlayerPresenter playerPresenter, MainHUDPresenter mainHUDPresenter,
-            InputService inputService
+        public void Constrcut(SignalBus signalBus 
+            //,CameraPresenter cameraPresenter,
+            //PlayerPresenter playerPresenter, MainHUDPresenter mainHUDPresenter,
+            //InputService inputService
             )
         {
             _signalBus = signalBus;
 
-            _cameraPresenter = cameraPresenter;
+            //_cameraPresenter = cameraPresenter;
 
-            _playerPresenter = playerPresenter;
+            //_playerPresenter = playerPresenter;
 
-            _mainHUDPresenter = mainHUDPresenter;
+            //_mainHUDPresenter = mainHUDPresenter;
 
-            _inputService = inputService;
+            //_inputService = inputService;
 
              EssenceType = Layer;
 
             _signalBus.Fire(new EssenceServiceSignals.Register(this));
         }
-       
 
-        public void NetInitView(CameraPresenter cPresenter, PlayerPresenter _pPresenter, InputService inService)
-        {
-            _cameraPresenter = cPresenter;
-            _playerPresenter = _pPresenter;
-            _inputService = inService;
-        }
+        //public override void OnStartServer()
+        //{
+        //    _mainHUDPresenter.ShowView();
 
-        public override void OnStartServer()
-        {
-            _mainHUDPresenter.ShowView();
+        //    _cameraPresenter.ShowView<TopDownCameraView>(CameraServiceConstants.TopDownCamera, _playerPresenter.GetView());
 
-            _cameraPresenter.ShowView<TopDownCameraView>(CameraServiceConstants.TopDownCamera, _playerPresenter.GetView());
+        //     //_wolfPresenter.ShowView();
 
-             //_wolfPresenter.ShowView();
+        //     //_inputService.TakePossessionOfObject(_playerPresenter);
 
-             _inputService.TakePossessionOfObject(_playerPresenter);
-
-            base.OnStartServer(); 
-           
-        }
+        //     base.OnStartServer(); 
+        //}
       
-        public override void OnStartLocalPlayer()
-        {
-            
-        }
+        //public override void OnStartLocalPlayer()
+        //{
 
-        public override void OnStopLocalPlayer()
-        {
+        //}
+
+        //public override void OnStopLocalPlayer()
+        //{
            
-        }
+        //}
     }
 }

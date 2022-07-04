@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RegistryData:
     Id: 1
-    NetworkType: 3
+    NetworkType: 0
     NetworkEngine: 1
     NetworkAuthMode: 2
     NetworkContextType: 1
