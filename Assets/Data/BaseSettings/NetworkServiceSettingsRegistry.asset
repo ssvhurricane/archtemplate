@@ -15,6 +15,6 @@ MonoBehaviour:
   RegistryData:
     Id: 1
     NetworkType: 0
-    NetworkEngine: 1
-    NetworkAuthMode: 2
-    NetworkContextType: 1
+    NetworkEngine: 0
+    NetworkAuthMode: 0
+    NetworkContextType: 0

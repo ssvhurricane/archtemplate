@@ -1,6 +1,6 @@
 using Config;
+using Services.Log;
 using System;
-using UnityEngine;
 
 namespace Data.Settings
 {
@@ -13,29 +13,5 @@ namespace Data.Settings
 
         public LogItemData[] LogItemDatas;
         string IRegistryData.Id => Id;
-    }
-
-    [Serializable]
-    public class LogItemData 
-    {
-        public string Name;
-
-        public bool Enable;
-
-        public Color Color;
-
-        public LogItemType LogItemType;
-    }
-
-    public enum LogItemType
-    {
-        None,
-        Presenter,
-        Service,
-        Model,
-        View,
-        Gameplay,
-        Ability,
-        Test
     }
 }
