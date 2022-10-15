@@ -8,22 +8,12 @@ namespace Services.Network
     {
         private readonly SignalBus _signalBus;
 
-        private MirrorSDKController _mirrorSDKController;
-
-        private CustomSDKController _customSDKController;
-
         private NetworkServiceSettings _networkServiceSettings;
 
         public NetworkService(SignalBus signalBus,
-            MirrorSDKController mirrorSDKController,
-            CustomSDKController customSDKController,
             NetworkServiceSettings networkServiceSettings)
         {
             _signalBus = signalBus;
-
-            _mirrorSDKController = mirrorSDKController;
-
-            _customSDKController = customSDKController;
 
             _networkServiceSettings = networkServiceSettings;
 
@@ -42,17 +32,9 @@ namespace Services.Network
         {
             switch ( _networkServiceSettings.NetworkEngine)
             {
-                case NetworkEngine.Mirror:
-                    {
-                        // TODO:
-
-                        _mirrorSDKController.CreateContext(_networkServiceSettings.NetworkContextType);
-
-                        break;
-                    }
                 case NetworkEngine.Custom: 
                     {
-                        // TODO:  CustomSDKController
+                       // TODO:
                         break;
                     }
             }
@@ -75,10 +57,7 @@ namespace Services.Network
 
         public INetworkContext GetCurrnetContext()
         {
-            if(_networkServiceSettings.NetworkEngine == NetworkEngine.Mirror)
-                    return _mirrorSDKController.GetCurrnetNetworkContext();
-            else if (_networkServiceSettings.NetworkEngine == NetworkEngine.Custom)
-                return null;// _customSDKController.GetCurrnetNetworkContext();
+            // TODO:
             return null;
         }
 
@@ -116,35 +95,32 @@ namespace Services.Network
 
         private void StartServer()
         {
-            _mirrorSDKController.GetCurrnetNetworkContext().StartServer();
+           // TODO:
         }
 
         private void StopServer()
         {
-            _mirrorSDKController.GetCurrnetNetworkContext().StopServer();
+            // TODO:
         }
 
         private void StartClient()
         {
-            _mirrorSDKController.GetCurrnetNetworkContext().StartClient();
+            // TODO:
         }
 
         private void StopClient()
         {
-            _mirrorSDKController.GetCurrnetNetworkContext().StopClient();
+            // TODO:
         }
 
         private void StartHost()
         {
-            _mirrorSDKController.GetCurrnetNetworkContext().StartHost();
+            // TODO:
         }
 
         private void StopHost()
         {
-            _mirrorSDKController.GetCurrnetNetworkContext().StopHost();
+            // TODO:
         }
-
-
-
     }
 }

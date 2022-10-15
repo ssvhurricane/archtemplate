@@ -85,9 +85,7 @@ namespace Bootstrap
 
         private void BindControllers() 
         {
-            Container.InstallElementAsSingle<MirrorSDKController>();
-
-            Container.InstallElementAsSingle<CustomSDKController>();
+            // Container.InstallElementAsSingle<CustomSDKController>();
         }
       
         private void InstallAnimations()

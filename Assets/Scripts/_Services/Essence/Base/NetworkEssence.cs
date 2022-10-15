@@ -1,10 +1,9 @@
-using Mirror;
 using UnityEngine;
 using View;
 
 namespace Services.Essence
 {
-    public class NetworkEssence : NetworkBehaviour, IEssence
+    public class NetworkEssence : MonoBehaviour, IEssence
     {
         public EssenceType EssenceType { get; set; }
 
